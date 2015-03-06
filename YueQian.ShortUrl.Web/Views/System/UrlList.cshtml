@@ -1,0 +1,211 @@
+﻿@model YueQian.ShortUrl.Admin.ViewModels.AdminCommonModel
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<div class="row-fluid" id="update" style="display: none;">
+    <div class="widget-box">
+        <div class="widget-header">
+            <h4>短址</h4>
+        </div>
+        <div class="widget-body">
+            <form class="form-horizontal" id="data-form">
+                <div class="control-group">
+                    <input type="hidden" name="Id" id="Id" value="0" />
+                    <input type="hidden" name="ShortUrl" id="ShortUrl" value="" />                    
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="Title">标题</label>
+                    <div class="controls">
+                        <input type="text" id="Title" name="Title" class="span8" placeholder="标题">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="Url">原址</label>
+                    <div class="controls">
+                        <input type="text" id="Url" name="Url" class="span8" placeholder="原址">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="Keywords">关键词</label>
+                    <div class="controls">
+                        <input type="text" id="Keywords" name="Keywords" class="span8" placeholder="关键词">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="Description">描述</label>
+                    <div class="controls">
+                        <textarea class="span8 limited" id="Description" name="Description" data-maxlength="120" maxlength="120"></textarea>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button class="btn btn-info" type="submit"><i class="icon-ok"></i>提交</button>
+                    &nbsp; &nbsp; &nbsp;
+                    <button class="btn" type="reset" onclick="op.addcancel()"><i class="icon-undo"></i>取消</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="hr"></div>
+</div>
+<div class="row-fluid">
+    <div class="row-fluid">
+        <div class="table-header">
+        </div>
+        <div class="toolbar">
+            <form class="form-horizontal" id="searchForm">
+                <div class="control-group">
+                    <span>用户:</span><input type="text" name="username" id="username" class="input-mini" value="@Model.UserName" />
+                    <span>关键词:</span><input type="text" name="keyword" id="keyword" class="input-xlarge" value="@Model.SearchKeyWord" />
+                    <span>注册时间:</span><input type="text" name="periodtime" id="periodtime" style="width: 175px;" />
+                    <button type="button" onclick="op.search();" class="btn btn-small btn-primary" style="margin-left: 10px;">搜 索</button>
+                    <button type="reset" class="btn btn-small btn-inverse" style="margin-left: 20px;">重 置</button>
+                </div>
+            </form>
+        </div>
+        <table id="dataTable" class="table table-hover table-nomargin table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th style="width: 10px;">
+                        <label>
+                            <input type="checkbox" id="check_all" /><span class="lbl"></span>
+                        </label>
+                    </th>
+                    <th style="width: 100px;">
+                        用户名
+                    </th>
+                    <th style="width: 180px;">
+                        跃迁短址
+                    </th>
+                    <th>
+                        原址
+                    </th>
+                    <th style="width: 80px;">
+                        访问量
+                    </th>
+                    <th style="width: 140px;">
+                        更新时间
+                    </th>
+                    <th style="width: 100px;">
+                        操作
+                    </th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+<link href="~/Content/admin/css/daterangepicker.css" rel="stylesheet" />
+<script type="text/javascript" src="/Content/admin/js/moment.min.js"></script>
+<script type="text/javascript" src="/Content/admin/js/daterangepicker.js"></script>
+<script type="text/javascript" src="/Content/admin/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="/Content/admin/js/jquery.dataTables.bootstrap.js"></script>
+<script type="text/javascript">
+    var op = {
+        delete: function (id, url) {
+            if (confirm("确实要删除短址'" + url + "'吗?")) {
+                $.post("/System/DeleteUrls", { id: id }, function (data) {
+                    alert(data.msg);
+                    op.search();
+                }, "JSON");
+            }
+            return false;
+        },
+        edit: function (id) {
+            $.post("/System/WebUrlInfo", { eId: id }, function (data) {
+                if (data.result) {
+                    $("#Id").val(data.model.Id);
+                    $("#ShortUrl").val(data.model.ShortUrl);
+                    $("#Title").val(data.model.Title);
+                    $("#Url").val(data.model.Url);
+                    $("#Keywords").val(data.model.Keywords);
+                    $("#Description").text(data.model.Description);
+                    $("#update").slideDown();
+                }
+                else {
+                    alert(data.model);
+                    return false;
+                }
+            }, "Json");
+        },
+        addcancel: function () {
+            $("#Id").val("0");
+            $("#ShortUrl").val("");
+            $("#Title").val("");
+            $("#Url").val("");
+            $("#Keywords").val("");
+            $("#Description").text("");
+            $("#update").slideUp();
+        },
+        init: function () {
+            $('#periodtime').daterangepicker();
+
+            $("#data-form").validate({
+                errorElement: "span",
+                errorClass: "invalid",
+                rules: {
+                    Url: { required: true }
+                },
+                messages: {
+                    Url: { required: "原址不得为空" }
+                },
+                submitHandler: function (form) {
+                    $.post("/System/WebUrlInfo", $("#data-form").serialize(),
+                        function (data) {
+                            alert(data.msg);
+                            if (data.result)
+                                window.location.href = "/System/UrlList";
+                            return false;
+                        }, "Json");
+                }
+            });
+
+            op.search();
+        },
+        search: function () {
+            $("#dataTable").dataTable().fnDestroy();
+            $('#dataTable').dataTable({
+                "bProcessing": true,
+                "bSort": false,
+                "bServerSide": true,
+                "iDisplayLength": 20,
+                "bPaginate": true,
+                "aoColumns": [
+                    { "mDataProp": "CheckBox" },
+                    { "mDataProp": "UserId" },
+                    { "mDataProp": "FullUrl" },
+                    { "mDataProp": "Title" },
+                    { "mDataProp": "Count" },
+                    { "mDataProp": "CreationDate" },
+                    { "mDataProp": "Operate" }
+                ],
+                "sAjaxSource": "/System/UrlList?cach=" + Math.random(),
+                "sServerMethod": "POST",
+                "fnServerParams": function (aoData) {
+                    aoData.push({
+                        "name": "username",
+                        "value": $("#username").val()
+                    }),
+                    aoData.push({
+                        "name": "keyword",
+                        "value": $("#keyword").val()
+                    }),
+                    aoData.push({
+                        "name": "StartTime",
+                        "value": $("#periodtime").val().split('-')[0] || "@(DateTime.MinValue.ToString())"
+                    }),
+                    aoData.push({
+                        "name": "EndTime",
+                        "value": $("#periodtime").val().split('-')[1] || "@(DateTime.Now.ToString())"
+                    })
+                },
+                "pagingType": "full_numbers",
+                "bFilter": false,
+                "sDom": 'frtip'
+            });
+        }
+    }
+
+
+    $(function () { op.init(); })
+</script>

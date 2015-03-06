@@ -1,0 +1,72 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{FF1079AD-8F9D-4FD5-8EE2-7D6156613597}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YueQian.ShortUrl.Core", "YueQian.ShortUrl.Core\YueQian.ShortUrl.Core.csproj", "{C9C6409E-5B1D-4D01-B78E-07FFE0469419}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YueQian.ShortUrl.Extensions", "YueQian.ShortUrl.Extensions\YueQian.ShortUrl.Extensions.csproj", "{25E44DD4-DB53-4E76-92AC-71D151B1AD58}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YueQian.ShortUrl.Models", "YueQian.ShortUrl.Models\YueQian.ShortUrl.Models.csproj", "{61AB04E5-1A5B-4B50-991E-A36148F6E6BB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YueQian.ShortUrl.Web", "YueQian.ShortUrl.Web\YueQian.ShortUrl.Web.csproj", "{B2139FF5-1B19-4D4C-BEB8-0A643CBC116A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExtendedMongoMembership", "ExtendedMongoMembership\ExtendedMongoMembership.csproj", "{3DAE074D-3193-4972-AB51-9CE16C4F01B0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YueQian.ShortUrl.ViewModels", "YueQin.ShortUrl.ViewModels\YueQian.ShortUrl.ViewModels.csproj", "{3E40188B-3A70-47DD-9D90-DD79FB69444C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YueQian.ShortUrl.Admin.ViewModels", "YueQian.ShortUrl.Admin.ViewModels\YueQian.ShortUrl.Admin.ViewModels.csproj", "{BBCBC997-BDDB-42AB-BE13-B168690A0BE3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C9C6409E-5B1D-4D01-B78E-07FFE0469419}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9C6409E-5B1D-4D01-B78E-07FFE0469419}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C9C6409E-5B1D-4D01-B78E-07FFE0469419}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C9C6409E-5B1D-4D01-B78E-07FFE0469419}.Release|Any CPU.Build.0 = Release|Any CPU
+		{25E44DD4-DB53-4E76-92AC-71D151B1AD58}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{25E44DD4-DB53-4E76-92AC-71D151B1AD58}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{25E44DD4-DB53-4E76-92AC-71D151B1AD58}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{25E44DD4-DB53-4E76-92AC-71D151B1AD58}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61AB04E5-1A5B-4B50-991E-A36148F6E6BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61AB04E5-1A5B-4B50-991E-A36148F6E6BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61AB04E5-1A5B-4B50-991E-A36148F6E6BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61AB04E5-1A5B-4B50-991E-A36148F6E6BB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B2139FF5-1B19-4D4C-BEB8-0A643CBC116A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2139FF5-1B19-4D4C-BEB8-0A643CBC116A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B2139FF5-1B19-4D4C-BEB8-0A643CBC116A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B2139FF5-1B19-4D4C-BEB8-0A643CBC116A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3DAE074D-3193-4972-AB51-9CE16C4F01B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3DAE074D-3193-4972-AB51-9CE16C4F01B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3DAE074D-3193-4972-AB51-9CE16C4F01B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3DAE074D-3193-4972-AB51-9CE16C4F01B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3E40188B-3A70-47DD-9D90-DD79FB69444C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E40188B-3A70-47DD-9D90-DD79FB69444C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E40188B-3A70-47DD-9D90-DD79FB69444C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E40188B-3A70-47DD-9D90-DD79FB69444C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BBCBC997-BDDB-42AB-BE13-B168690A0BE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BBCBC997-BDDB-42AB-BE13-B168690A0BE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BBCBC997-BDDB-42AB-BE13-B168690A0BE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BBCBC997-BDDB-42AB-BE13-B168690A0BE3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		VisualSVNWorkingCopyRoot = .
+	EndGlobalSection
+	GlobalSection(SubversionScc) = preSolution
+		Svn-Managed = True
+		Manager = AnkhSVN - Subversion Support for Visual Studio
+	EndGlobalSection
+EndGlobal

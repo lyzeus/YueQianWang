@@ -1,0 +1,71 @@
+﻿@model YueQian.ShortUrl.Models.WithdrawalsListViewModels
+@using YueQian.ShortUrl.Extensions;
+@using YueQian.ShortUrl.Models.Enums;
+
+@{
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+<script src="~/Scripts/My97DatePicker/WdatePicker.js"></script>
+<div class="tab-content default-tab" id="tab1">
+    <form action="" method="get">
+        <div>
+            @(Html.EnumSelect<WithdrawalsType>("state", Convert.ToInt32(Model.SearchModel.CategoryId), new { }))
+            <input type="text" class="text-input" style="width:120px;" name="keyword" value="@Model.SearchModel.Keyword" placeholder="关键词" />
+            <input type="text" class="text-input Wdate" style="width: 80px;" onclick="WdatePicker()" readonly="readonly" name="startDate" value="@Model.SearchModel.StartDate" placeholder="开始时间" />
+            <input type="text" class="text-input Wdate" style="width: 80px;" onclick="WdatePicker()" readonly="readonly" name="endDate" value="@Model.SearchModel.EndDate" placeholder="结束时间" />
+            <input class="button" type="submit" value="搜索" />
+            <input class="button" type="reset" value="重置" onclick="javascript: window.location.href = '/User/List'" />
+        </div>
+    </form>
+    <table class="datalist">
+        <thead>
+            <tr>
+                <th style="width:40px;">
+                    <input class="check-all" type="checkbox" />
+                </th>
+                <th style="width: 100px;">状态</th>
+                <th>提现信息
+                </th>
+                <th style="width: 120px;">申请时间
+                </th>
+                <th style="width: 120px;">
+                    操作
+                </th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <td colspan="6">
+                    @Html.Pager()
+                    <div class="clear">
+                    </div>
+                </td>
+            </tr>
+        </tfoot>
+        <tbody>
+            @if (Model.List != null)
+            {
+                var i = 0;
+                foreach (var item in Model.List)
+                {
+                <tr class="@(i % 2 == 1 ? "alt" : "n")">
+                    <td>
+                        <input name="sid" value="@item.Id" type="checkbox" />
+                    </td>
+                    <td>
+                        @item.Keyword
+                    </td>
+                    <td>
+                        @Html.Raw(item.Title)
+                    </td>
+                    <td>@item.DateTimeString</td>
+                    <td>
+                        @Html.Raw(item.Description) 
+                    </td>
+                </tr>
+                    i++;
+                }
+            }
+        </tbody>
+    </table>
+</div>

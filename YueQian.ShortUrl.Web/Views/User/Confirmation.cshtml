@@ -1,0 +1,25 @@
+﻿@{
+
+    var result = (bool)ViewBag.IsConfirm;
+    var tip = "确认账户" + (result ? "成功" : "失败,请重新确认。");
+    ViewBag.Title = tip;
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+
+<div class="notification success  png_bg">
+    <div>
+        @tip
+    </div>
+</div>
+<script type="text/javascript">
+    var countdown = null;
+    window.onload = function () {
+        var totalSecond = 2;
+        var r = "@(result)".toLowerCase();
+        if ("true" == r) {
+            setTimeout(function () {
+                window.location.href = "/User";
+            }, 1000);
+        }
+    }
+</script>

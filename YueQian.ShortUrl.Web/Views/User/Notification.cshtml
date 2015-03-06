@@ -1,0 +1,92 @@
+﻿@model YueQian.ShortUrl.ViewModels.UserNotificationViewModel
+@using YueQian.ShortUrl.Extensions;
+
+@{
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+<style>
+    .unread { font-weight: bold; cursor: pointer; }
+</style>
+
+<script src="~/Scripts/My97DatePicker/WdatePicker.js"></script>
+<script>
+    function readNotification(id) {
+        $.post("/User/ReadNotification", { id: id }, function (data) {
+            if (data.result) {
+                $("#rn" + id).removeClass("unread");
+                $("#rn" + id).removeAttr("onclick");
+                $("#rnd" + id).html("已读");
+
+                parent.read(1);
+            }
+        }, "JSON");
+    }
+</script>
+<div class="tab-content default-tab" id="tab1">
+    <form action="" method="get">
+        <div>
+            <input type="text" class="text-input" style="width:120px;" name="keyword" value="@Model.SearchModel.Keyword" placeholder="关键词" />
+            <input type="text" class="text-input Wdate" style="width: 80px;" onclick="WdatePicker()" readonly="readonly" name="startDate" value="@Model.SearchModel.StartDate" placeholder="开始时间" />
+            <input type="text" class="text-input Wdate" style="width: 80px;" onclick="WdatePicker()" readonly="readonly" name="endDate" value="@Model.SearchModel.EndDate" placeholder="结束时间" />
+            <input class="button" type="submit" value="搜索" />
+            <input class="button" type="reset" value="重置" onclick="javascript: window.location.href = '/User/List'" />
+            @*<a class="button" href="/User/SendNotification" style="float:right;margin-right:10px;">发送消息</a>*@
+        </div>
+    </form>
+    <table class="datalist">
+        <thead>
+            <tr>
+                <th style="width:30px;">
+                    <input class="check-all" type="checkbox" />
+                </th>
+                <th style="width: 80px;text-align:center;">
+
+                </th>
+
+                <th style="width: 100px;text-align:center;">
+                    消息类型
+                </th>
+                <th>
+                    消息内容
+                </th>
+                <th style="width: 100px;">
+                    接收时间
+                </th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <td colspan="6">
+                    @Html.Pager()
+                    <div class="clear">
+                    </div>
+                </td>
+            </tr>
+        </tfoot>
+        <tbody>
+            @if (Model.List != null)
+            {
+                var i = 0;
+                foreach (var item in Model.List)
+                {
+                    <tr class="@(i % 2 == 1 ? "alt" : "n")">
+                        <td>
+                            <input name="sid" value="@item.Id" type="checkbox" />
+                        </td>
+                        <td style="text-align:center;" id="rnd@(item.Id)">
+                            @item.Description
+                        </td>
+                        <td style="text-align:center;">
+                            @item.Keyword
+                        </td>
+                        <td>
+                            @Html.Raw(item.Title)
+                        </td>
+                        <td>@item.DateTimeString</td>
+                    </tr>
+                    i++;
+                }
+            }
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,42 @@
+﻿@using YueQian.ShortUrl.Extensions
+@model YueQian.ShortUrl.Models.Verification
+@{
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Content/user/scripts/verification.create.js"></script>
+<form id="data-form" action="#" method="post">
+    @Html.HiddenFor(model => model.Id)
+    <p>
+        <label>*提现方式</label>
+        @Html.PaymentSelect("PaymentId", Model != null ? Model.PaymentId : 0, new { onchange = "paymentChange(this)" })
+    </p>
+    <p id="pbank" style="display: none;">
+        <label>*开户行</label>
+        @Html.TextBoxFor(model => model.AccountBank, new { @class = "text-input medium-input" })
+    </p>
+    <p>
+        <label>*账户</label>
+        @Html.TextBoxFor(model => model.Account, new { @class = "text-input medium-input" })
+    </p>
+    <p>
+        <label>*账户名</label>
+        @Html.TextBoxFor(model => model.RealName, new { @class = "text-input medium-input" })
+    </p>
+    <p>
+        <label>*手机</label>
+        @Html.TextBoxFor(model => model.MobilePhone, new { @class = "text-input medium-input" })
+    </p>
+    <p>
+        <label>备注</label>
+        @Html.TextAreaFor(model => model.Contents, new { @class = "text-input medium-input", style = "height:100px;" })
+    </p>
+    <p>
+        <input class="button" type="submit" value="提交" />
+        @if (Model != null)
+        {<input class="button" type="button" value="返回" onclick="javascript: window.location.href = document.referrer" />}
+    </p>
+    <div class="clear">
+    </div>
+</form>

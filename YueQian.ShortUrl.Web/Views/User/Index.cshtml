@@ -1,0 +1,173 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>用户中心-跃迁网</title>
+    <link rel="stylesheet" href="~/Content/user/css/reset.css" type="text/css" media="screen" />
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="~/Content/user/css/style.css" type="text/css" media="screen" />
+    <!-- Invalid Stylesheet. This makes stuff look pretty. Remove it if you want the CSS completely valid -->
+    @*   <link rel="stylesheet" href="resources/css/invalid.css" type="text/css" media="screen" />
+        <!--                       Javascripts                       -->*@
+
+    <link href="~/Scripts/Easydialog/easydialog.css" rel="stylesheet" />
+    <script src="~/Scripts/Easydialog/easydialog.min.js"></script>
+
+    <script src="~/Scripts/jquery.js"></script>
+    <script src="~/Content/user/scripts/user.init.js"></script>
+    @*    <!-- Facebox jQuery Plugin -->
+        <script type="text/javascript" src="resources/scripts/facebox.js"></script>
+        <!-- jQuery WYSIWYG Plugin -->
+        <script type="text/javascript" src="resources/scripts/jquery.wysiwyg.js"></script>
+        <!-- jQuery Datepicker Plugin -->
+        <script type="text/javascript" src="resources/scripts/jquery.datePicker.js"></script>
+        <script type="text/javascript" src="resources/scripts/jquery.date.js"></script>*@
+    <script type="text/javascript">
+        $(function () {
+            var v = "@ViewBag.RelateUrlId";
+            if (v.length > 0) {
+                openAddUrl("/User/Update/" + v);
+            }
+        });
+        function read(count) {
+            var count = ~~$("#notification").html() - ~~count;
+            if (count >= 0)
+                $("#notification").html(count);
+        }
+    </script>
+    <style type="text/css">
+        /*自适应高使用*/
+        html, body { height: 100%; overflow: hidden; margin: 0px; padding: 0px; }
+        html > body { /*-- for !IE6.0 --*/ width: auto; height: auto; position: absolute; top: 0px; left: 0px; right: 0px; bottom: 0px; }
+        /*自适应高使用*/
+        #body-wrapper { width: 100%; height: 100%; }
+        #sidebar { overflow: auto; }
+        #main-content { height: 100%; }
+    </style>
+</head>
+<body>
+    <div id="body-wrapper">
+        <div id="sidebar">
+            <div id="sidebar-wrapper">
+                <h1 id="sidebar-title">
+                    <a href="/">跃迁网</a>
+                </h1>
+                <a href="/">
+                    <img id="logo" src="~/Content/user/images/logo.png" alt="Simpla Admin logo" />
+                </a>
+
+                <div id="profile-links">
+                    您好, <span>@(User.Identity.Name)</span><br /><br />
+                    您有<a id="notification" href="/User/Notification" onclick="javascript: document.getElementById('cTitle').innerHTML = '站内消息';" target="main">@(YueQian.ShortUrl.Core.NotificationFinder.CountUnRead())</a>条新消息<br /><br />
+                    <a target="_blank" href="/" title="跃迁网">全站首页</a> |
+                    @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", style = "display:inline" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <a href="javascript:document.getElementById('logoutForm').submit()">注销</a>
+                    }
+                </div>
+                <ul id="main-nav">
+                    <li><a href="/User/Dashboard" class="nav-top-item no-submenu current">用户中心 </a></li>
+                    <li>
+                        <a href="#" class="nav-top-item">短址管理 </a>
+                        <ul>
+                            <li><a href="/User/Create">新增短址</a></li>
+                            <li><a href="/User/List">短址管理</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-top-item">我的积分 </a>
+                        <ul>
+                            <li><a href="/User/MyIntegral">我的积分</a></li>
+                            <li><a href="/User/CountList">我的积分记录</a></li>
+                            @*<li><a href="/User/UsedCountList">积分使用记录</a></li>*@
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-top-item">我的提现</a>
+                        <ul>
+                            <li><a href="/User/Withdrawals">我要提现</a></li>
+                            <li><a href="/User/WithdrawalsList">我的提现记录</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-top-item">我的信息</a>
+                        <ul>
+                            <li><a href="/User/MyVerification">我的认证信息</a></li>
+                            <li><a href="/User/Manage">我要改密码</a></li>
+                            @*<li><a href="/User/Invite">邀请注册</a></li>*@
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div id="main-content">
+            <noscript>
+                <div class="notification error png_bg">
+                    <div>
+                        您的浏览器禁止的脚本,导致页面出错.
+                    </div>
+                </div>
+            </noscript>
+            <ul class="shortcut-buttons-set">
+                <li>
+                    <a class="shortcut-button" href="/User/Create">
+                        <span>
+                            <img src="~/Content/user/images/icons/pencil_48.png" alt="icon" /><br />
+                            新增短址
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a class="shortcut-button" href="/User/Withdrawals">
+                        <span>
+                            <img src="~/Content/user/images/icons/image_add_48.png" alt="icon" /><br />
+                            我要提现
+                        </span>
+                    </a>
+                </li>
+                @if (!(new YueQian.ShortUrl.Core.UserBehavior().IsUserSign(DateTime.Now)))
+                {
+                    <li>
+                        <a id="usersign" class="shortcut-button" href="#">
+                            <span>
+                                <img src="~/Content/user/images/icons/clock_48.png" alt="icon" /><br />
+                                我要签到
+                            </span>
+                        </a>
+                    </li>
+                }
+                <li>
+                    <a class="shortcut-button" href="/User/Notification">
+                        <span>
+                            <img src="~/Content/user/images/icons/comment_48.png" alt="icon" /><br />
+                            站内消息
+                        </span>
+                    </a>
+                </li>
+            </ul>
+            <div class="clear">
+            </div>
+            <div class="content-box" id="maincontent">
+                <div style="height: 100%; position: relative;">
+                    <div class="content-box-header">
+                        <h3 id="cTitle">系统公告</h3>
+                    </div>
+                    <div class="content-box-content" style="position: absolute; top: 40px; right: 0px; bottom: 0px; left: 0px;">
+                        <iframe src="/User/Dashboard" id="contentFrame" name="main" frameborder="0" scrolling="auto"
+                                height="100%" width="100%"></iframe>
+                    </div>
+                </div>
+            </div>
+            <div id="footer">
+                &#169; Copyright @DateTime.Now.Year 跃迁网 | Powered by <a target="_blank" href="http://yqurl.com">跃迁网</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

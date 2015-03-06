@@ -1,0 +1,21 @@
+﻿@model YueQian.ShortUrl.Models.MyIntegralViewModel
+@{
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+<div class="notification success">
+    <div>
+        可用积分 <b>@Model.Integral</b> <a style="float:right;" class="button" href="javascript:parent.openUrl('/User/Withdrawals')">提现</a><a class="button" style="float:right; margin-right:100px;" href="javascript:parent.openUrl('/User/CountList')">查看记录</a>
+    </div>
+</div>
+<div class="notification information">
+    <div>
+        已用积分 <b>@Model.UsedIntegral</b> 
+    </div>
+</div>
+<div class="notification information" style="display:none;">
+    <div>
+        冻结积分 <b>@Model.FrozenIntegral</b>
+    </div>
+</div>
+<div class="clear">
+</div>

@@ -1,0 +1,14 @@
+﻿@using YueQian.ShortUrl.Core
+@using YueQian.ShortUrl.Models
+@{Layout = "~/Views/Shared/_UserLayout.cshtml";}
+@{
+    var welmes = WelCome.GetSalutatroy();
+    var userId = UserBehavior.GetUserIdByUserName(User.Identity.Name);
+    var yqUser = new YueQianUser(userId);
+    var usr = yqUser.UserInfo;
+    var integral = yqUser.IntegralCalculator;
+    var level = yqUser.UserLevelCalculator;
+}
+<p>欢迎您，@(User.Identity.Name)@Html.Raw(usr.IsComfirm ? "&nbsp;&nbsp;" : "(未确认)&nbsp;")<font color="#FF0000">@welmes</font></p>
+<p>积分:<a href="/User/MyIntegral">@integral.Integral</a></p>
+<p>等级:@level.Level.Name</p>

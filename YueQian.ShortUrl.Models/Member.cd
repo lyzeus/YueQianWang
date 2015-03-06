@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="YueQian.ShortUrl.Models.UserEntity" Collapsed="true">
+    <Position X="6" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>UserEntity.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="YueQian.ShortUrl.Models.UserLevel" Collapsed="true">
+    <Position X="8.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAACAAAAAAAABAAAAAAAAAAA=</HashCode>
+      <FileName>UserLevel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="YueQian.ShortUrl.Models.UserSignIn" Collapsed="true">
+    <Position X="8" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>UserSignIn.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="YueQian.ShortUrl.Models.Verification" Collapsed="true">
+    <Position X="3.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAAAAAAAEAKAAAAAAAAAAAFAAAAAAAABgAEA=</HashCode>
+      <FileName>Verification.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="YueQian.ShortUrl.Models.UserNotification" Collapsed="true">
+    <Position X="6" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAEABAAAAAAEAAAAAAAAAAAAAAAAABAAAA=</HashCode>
+      <FileName>UserNotification.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="YueQian.ShortUrl.Models.UserTalk" Collapsed="true">
+    <Position X="3.75" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAA=</HashCode>
+      <FileName>UserTalk.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="YueQian.ShortUrl.Models.Integral" Collapsed="true">
+    <Position X="4" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAARAAAAAAACAAAAAAABAAAA=</HashCode>
+      <FileName>Integral.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="YueQian.ShortUrl.Models.UserDevice" Collapsed="true">
+    <Position X="8.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>UserDevice.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="YueQian.ShortUrl.Models.UserInfo" Collapsed="true">
+    <Position X="6" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAACAAAAAAAAAAAAEAAAAAAAAAAAA=</HashCode>
+      <FileName>UserInfo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="YueQian.ShortUrl.Models.RelationShip" Collapsed="true">
+    <Position X="12.75" Y="1.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>RelationShip.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="YueQian.ShortUrl.Models.RelationShipProperty" Collapsed="true">
+    <Position X="15" Y="1.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAIAAAAAAAAAAAQAAAAAAAAAAAAAAAAIAAA=</HashCode>
+      <FileName>RelationShip.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="YueQian.ShortUrl.Models.RelationShipPropertyValue" Collapsed="true">
+    <Position X="13.25" Y="2.75" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAkAAAAAAA=</HashCode>
+      <FileName>RelationShip.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="YueQian.ShortUrl.Models.LogBase" Collapsed="true">
+    <Position X="0.5" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAABAAAA=</HashCode>
+      <FileName>LogBase.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="YueQian.ShortUrl.Models.LoginLog">
+    <Position X="0.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>LoginLog.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="微软雅黑" Size="9" />
+</ClassDiagram>

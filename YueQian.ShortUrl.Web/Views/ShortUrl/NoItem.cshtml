@@ -1,0 +1,73 @@
+﻿@using YueQian.ShortUrl.Web.Helpers
+@using YueQian.ShortUrl.Extensions
+@{Layout = null;}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>未找到相应短址- 跃迁网</title>
+    <meta name="keywords" content="跃迁网,跃迁短址,短地址,短址,转址,网赚">
+    <meta name="description" content="跃迁网生成短址,分享获得收益">
+    <link href="/Content/Site.css" rel="stylesheet" type="text/css" />
+    <style type="text/css">
+        .header { background-image: -webkit-linear-gradient(to bottom, #f4f4ff, #c0c2d9); background-image: linear-gradient(to bottom, #f4f4ff, #c0c2d9); box-shadow: 0px 6px 10px #c9cace; border-bottom: 1px solid #8e90a7; }
+        .logo { float: left; }
+        .center { text-align: center; }
+        .foot { border-top: 1px solid #d6d8e4; }
+
+        #messagebox { position: fixed; right: 6px; bottom: 6px; }
+        #couplet-left, #couplet-right { position: absolute; z-index: 999; }
+        #couplet-left { left: -102px; }
+        #couplet-right { right: -102px; }
+        #banner { max-height: 200px; }
+        #main { }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="container">
+            <div class="logo" title="跃迁网">
+                <a href="/Home"><img src="~/Content/user/images/logo_design2_270_83.png" alt="跃迁网" /></a>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+    <div class="clear height10"></div>
+    <div class="wrapper">
+        <div id="couplet-left">
+            @Html.LeftCouplet()
+        </div>
+        <div id="couplet-right">@Html.RightCouplet()</div>
+        <div id="banner">
+            @Html.Banner()
+        </div>
+        <div id="main">
+            <h1 style="color:#f00;text-align:center;">没找到该短址</h1>
+            @Html.RenderHtmlAd("20141019075726375")
+        </div>
+        <div class="clear height30"></div>
+        <div class="foot">
+            <div class="clear height20"></div>
+            <a href="/">首页</a>
+            <a href="/About.html">关于我们</a>
+            <a href="/FAQ.html">常见问题</a>
+            <a href="/Contact.html">联系我们</a>
+            <a href="/Privacy.html">隐私政策</a>
+            <a href="/Terms.html">服务条件</a>
+            <div class="clear height10"></div>
+            <p class="center">©2012-@DateTime.Now.Year <a title="跃迁网" href="http://www.yqurl.com">跃迁网</a>  yqurl.com. 版权所有</p>
+        </div>
+        <div class="clear height10"></div>
+        <p class="center">
+            <script type="text/javascript">var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://"); document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F6e7a7d8f5271f198868f1eff92245fa3' type='text/javascript'%3E%3C/script%3E"));</script>
+            <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://"); document.write(unescape("%3Cspan id='cnzz_stat_icon_1253211897'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/z_stat.php%3Fid%3D1253211897%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));</script>
+        </p>
+        <div class="clear height20"></div>
+    </div>
+    <div id="messagebox">
+        @Html.Message()
+    </div>
+</body>
+</html>

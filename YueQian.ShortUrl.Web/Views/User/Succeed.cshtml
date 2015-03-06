@@ -1,0 +1,34 @@
+﻿@model YueQian.ShortUrl.Models.WebUrl
+@{
+    ViewBag.Title = "创建短址成功";
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+
+
+<div class="notification success  png_bg">
+    <div>
+        <h2>@Model.Title</h2>
+        <br />
+        <br />
+        <b id="shortUrl">@Model.FullUrl</b>
+        <a id="copy-button" data-clipboard-target="shortUrl" class="button">复制</a>
+        <br />
+        <br />
+        <a href="javascript:parent.openUrl('/User/Create');">继续添加</a>
+        <a href="javascript:parent.openUrl('/User/List');">返回列表</a>
+    </div>
+</div>
+<script src="/Scripts/ZeroClipboard/ZeroClipboard.min.js"></script>
+<script>
+    ZeroClipboard.config({
+        moviePath: '/Scripts/ZeroClipboard/ZeroClipboard.swf',
+        swfPath: "/Scripts/ZeroClipboard/ZeroClipboard.swf"
+    });
+
+    var client = new ZeroClipboard($("#copy-button"));
+    client.on("load", function (readyEvent) {
+        client.on("complete", function (client, args) {
+            alert('复制成功');
+        });
+    });
+</script>

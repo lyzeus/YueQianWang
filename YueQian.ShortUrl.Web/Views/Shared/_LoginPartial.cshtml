@@ -1,0 +1,18 @@
+﻿@if (Request.IsAuthenticated)
+{
+    <text>
+    你好，@Html.ActionLink(User.Identity.Name, "Index", "User", routeValues: null, htmlAttributes: new { @class = "username", title = "管理" })!
+        @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+        {
+            @Html.AntiForgeryToken()
+            <a href="javascript:document.getElementById('logoutForm').submit()">注销</a>
+        }
+    </text>
+}
+else
+{
+    <ul>
+        <li><a target="_blank" id="registerLink" href="/User/Register">注册</a></li>
+        <li><a target="_blank" id="loginLink" href="/User/Login">登录</a></li>
+    </ul>
+}

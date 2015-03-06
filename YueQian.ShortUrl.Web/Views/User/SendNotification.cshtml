@@ -1,0 +1,59 @@
+﻿@model YueQian.ShortUrl.Models.UserNotification
+@{
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<form id="notificationform" action="#" method="post">
+    <p>
+        <label>接收人(填写用户名)</label>
+        <input type="text" id="UserNames" name="UserNames" value="" class="text-input medium-input" />
+    </p>
+    <p>
+        <label>标题</label>
+        @Html.TextBoxFor(model => model.Title, new { @class = "text-input medium-input" })
+    </p>
+
+    <p>
+        <label>内容</label>
+        @Html.TextAreaFor(model => model.Contents, new { @class = "text-input medium-input", style = "height:100px;" })
+    </p>
+    <p>
+        <input class="button" type="submit" value="提交" />
+        <input class="button" type="button" value="返回" onclick="javascript: window.location.href ='/User/Notification'" />
+    </p>                                          
+    <div class="clear">
+    </div>
+</form>
+<script type="text/javascript">
+    $(function () {
+        $("#notificationform").validate({
+            errorElement: "span",
+            errorClass: "invalid",
+            rules: {
+                UserNames: { required: true },
+                Title: { required: true }
+            },
+            messages: {
+                UserNames: { required: "请填写接受人用户名" },
+                Title: { required: "请填写消息标题" }
+            },
+            submitHandler: function (form) {
+                $.post("/User/SendNotification", $("#notificationform").serialize(),
+                    function (data) {
+                        if (data.result) {
+                            if (confirm(data.msg + ",是否继续发送消息\n点击“确定”将继续发送消息,点击“取消”将返回消息列表")) {
+                                window.location.href = "/User/SendNotification";
+                                return false;
+                            }
+                            window.location.href = "/User/Notification";
+                        }
+                        else {
+                            alert(data.msg);
+                            return false;
+                        }
+                    }, "Json");
+            }
+        });
+
+    });
+</script>

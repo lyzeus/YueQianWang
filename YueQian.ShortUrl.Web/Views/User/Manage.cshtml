@@ -1,0 +1,32 @@
+﻿@model YueQian.ShortUrl.Web.Models.LocalPasswordModel
+@{
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Content/user/scripts/user.manage.js"></script>
+@using (Html.BeginForm("Manage", "User", FormMethod.Post, new { id = "manageForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary()
+    <fieldset>
+        <legend>更改密码</legend>
+        <p>
+            <label>
+                @Html.LabelFor(m => m.OldPassword)</label>
+            @Html.PasswordFor(m => m.OldPassword, new { @class = "text-input small-input" })
+        </p>
+        <p>
+            <label>
+                @Html.LabelFor(m => m.NewPassword)</label>
+            @Html.PasswordFor(m => m.NewPassword, new { @class = "text-input small-input" })
+        </p>
+        <p>
+            <label>
+                @Html.LabelFor(m => m.ConfirmPassword)</label>
+            @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "text-input small-input" })
+        </p>
+        <p>
+            <input class="button" type="submit" value="更改密码" />
+        </p>
+    </fieldset>
+}

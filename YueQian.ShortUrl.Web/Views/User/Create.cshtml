@@ -1,0 +1,38 @@
+﻿@model YueQian.ShortUrl.Models.WebUrl
+@{
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Content/user/scripts/shorturl.create.js"></script>
+<form id="shorturlform" action="#" method="post">
+    @if (Model != null)
+    {
+        <p>
+            <label>短址</label>
+            <a href="@Model.FullUrl" target="_blank">@Model.FullUrl</a>
+            @Html.HiddenFor(model => model.Id)
+            @Html.HiddenFor(model => model.ShortUrl)
+        </p>}
+    <p>
+        <label>标题</label>
+        @Html.TextBoxFor(model => model.Title, new { @class = "text-input medium-input" })
+    </p>
+    <p>
+        <label>*原始地址(须带http://)</label>
+        @Html.TextBoxFor(model => model.Url, new { @class = "text-input medium-input" })
+    </p>
+    @if (Model != null)
+    {
+        <p>
+            <label>描述</label>
+            @Html.TextAreaFor(model => model.Description, new { @class = "text-input medium-input", style = "height:100px;" })
+        </p>}
+    <p>
+        <input class="button" type="submit" value="提交" />
+        @if (Model != null)
+        {
+            <input class="button" type="button" value="返回" onclick="javascript: window.location.href = document.referrer" />}
+    </p>
+    <div class="clear">
+    </div>
+</form>

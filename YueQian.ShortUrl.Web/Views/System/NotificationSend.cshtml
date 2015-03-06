@@ -1,0 +1,93 @@
+﻿@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<div class="row-fluid">
+    <div class="widget-box">
+        <div class="widget-header">
+            <h4>通知内容</h4>
+        </div>
+        <div class="widget-body">
+            <form class="form-horizontal" id="data-form" method="post" enctype="multipart/form-data">
+                <div class="control-group">
+                    <input type="hidden" name="Id" id="Id" value="0" />
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="ActualPrice">接收人(填写用户名)</label>
+                    <div class="controls">
+                        <span class="input-icon">
+                            <i class="icon-search"></i>
+                            <input autocomplete="off" id="search-user" type="text" class="input-small search-query" placeholder="搜索">
+                        </span>
+                        <button id="btn-adduser" class="btn btn-small" >添加</button>
+                        <input type="text" id="UserNames" name="UserNames" placeholder="接收人" data-role="tagsinput" class="span8 limited"  />
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="Title">标题</label>
+                    <div class="controls">
+                        <input type="text" id="Title" name="Title" placeholder="标题" class="span8 limited" />
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="Contents">内容</label>
+                    <div class="controls">
+                        <textarea class="span8 limited" id="Contents" name="Contents" data-maxlength="120" maxlength="120"></textarea>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button class="btn btn-info" type="submit"><i class="icon-ok"></i>提交</button>
+                    &nbsp; &nbsp; &nbsp;
+                    <button class="btn" type="reset"><i class="icon-undo"></i>取消</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="/Scripts/jquery.validate.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+        
+        $('#search-user').typeahead({
+            source: function (query, process) {
+                var parameter = { query: query };
+                $.post("/System/GetUserName", parameter, function (data) {
+                    process(data);
+                });
+            }
+        });
+        $("#btn-adduser").click(function () {
+
+        });
+
+
+        $("#data-form").validate({
+            errorElement: "span",
+            errorClass: "invalid",
+            rules: {
+                UserNames: { required: true },
+                Title: { required: true }
+            },
+            messages: {
+                UserNames: { required: "填写接收人" },
+                Title: { required: "填写标题" }
+            },
+            submitHandler: function (form) {
+                $.post("/System/SendNotification", $("#data-form").serialize(),
+                    function (data) {
+                        if (data.result) {
+                            if (confirm(data.msg + ",是否继续发送消息\n点击“确定”将继续发送消息,点击“取消”将返回消息列表")) {
+                                window.location.href = "/System/NotificationSend";
+                                return false;
+                            }
+                            window.location.href = "/System/Notification";
+                        }
+                        else {
+                            alert(data.msg);
+                            return false;
+                        }
+                    }, "Json");
+            }
+        });
+    })
+</script>

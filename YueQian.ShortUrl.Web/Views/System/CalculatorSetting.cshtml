@@ -1,0 +1,178 @@
+﻿@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="row-fluid">
+    <p>
+        <button class="btn btn-primary" onclick="op.add()"><i class="icon-glass"></i>新增积分模式</button>
+        <a class="btn btn-primary" href="/System/Setting"><i class="icon-undo"></i>返回设置</a>
+    </p>
+    <div class="row-fluid" id="add" style="display: none;">
+        <div class="widget-box">
+            <div class="widget-header">
+                <h4>积分模式</h4>
+            </div>
+            <div class="widget-body">
+                <form class="form-horizontal" id="data-form">
+                    <div class="control-group">
+                        <input type="hidden" name="Id" id="Id" value="0" />
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="Name">名称</label>
+                        <div class="controls">
+                            <input type="text" id="Name" name="Name" placeholder="名称">
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="PerViewIntegral">访问分数</label>
+                        <div class="controls">
+                            <input type="text" id="PerViewIntegral" name="PerViewIntegral" placeholder="分数">
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="SignIntegral">签到分数</label>
+                        <div class="controls">
+                            <input type="text" id="SignIntegral" name="SignIntegral" placeholder="分数">
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="SpreadIntegral">推广分数</label>
+                        <div class="controls">
+                            <input type="text" id="SpreadIntegral" name="SpreadIntegral" placeholder="分数">
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="AdminAddIntegral">管理员加分</label>
+                        <div class="controls">
+                            <input type="text" id="AdminAddIntegral" name="AdminAddIntegral" placeholder="分数">
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="Contents">说明</label>
+                        <div class="controls">
+                            <textarea class="span8 limited" id="Contents" name="Contents" data-maxlength="120" maxlength="120"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button class="btn btn-info" type="submit"><i class="icon-ok"></i>提交</button>
+                        &nbsp; &nbsp; &nbsp;
+                        <button class="btn" type="reset" onclick="op.addcancel()"><i class="icon-undo"></i>取消</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="hr"></div>
+    </div>
+    <div class="table-header">
+    </div>
+    <table id="dataTable" class="table table-hover table-nomargin table-striped table-bordered">
+        <thead>
+            <tr>
+                <th style="width: 200px;">模式名称</th>
+                <th style="width: 135px;">访问积分</th>
+                <th style="width: 135px;">签到积分</th>
+                <th style="width: 135px;">推广积分</th>
+                <th style="width: 135px;">管理员加分</th>
+                <th>说明</th>
+                <th style="width: 140px;">更新时间</th>
+                <th style="width: 90px;">操作</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script type="text/javascript" src="/Content/admin/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="/Content/admin/js/jquery.dataTables.bootstrap.js"></script>
+<script type="text/javascript">
+    var op = {
+        add: function () {
+            $("#add").slideDown();
+        },
+        edit: function (id) {
+            $.post("/System/CalculatorSetting", { eId: id }, function (data) {
+                if (data.result) {
+                    $("#Id").val(data.model.Id);
+                    $("#Name").val(data.model.Name);
+                    $("#PerViewIntegral").val(data.model.PerViewIntegral);
+                    $("#SignIntegral").val(data.model.SignIntegral);
+                    $("#SpreadIntegral").val(data.model.SpreadIntegral);
+                    $("#AdminAddIntegral").val(data.model.AdminAddIntegral);
+                    $("#Contents").text(data.model.Contents);
+                    $("#add").slideDown();
+                }
+                else {
+                    alert(data.model);
+                    return false;
+                }
+            }, "Json");
+        },
+        addcancel: function () {
+            $("#Id").val("0");
+            $("#Name").val("");
+            $("#PerViewIntegral").val("");
+            $("#SignIntegral").val("");
+            $("#SpreadIntegral").val("");
+            $("#AdminAddIntegral").val("");
+           $("#Contents").text("");
+            $("#add").slideUp();
+        },
+        init: function () {
+            $("#data-form").validate({
+                errorElement: "span",
+                errorClass: "invalid",
+                rules: {
+                    Name: { required: true },
+                    PerViewIntegral: { required: true, number: true },
+                    SignIntegral: { required: true, number: true },
+                    SpreadIntegral: { required: true, number: true },
+                    AdminAddIntegral: { required: true, number: true }
+                },
+                messages: {
+                    Name: { required: "模式名称" },
+                    PerViewIntegral: { required: "访问分数", number: "请填写一个数字" },
+                    SignIntegral: { required: "签到分数", number: "请填写一个数字" },
+                    SpreadIntegral: { required: "推广分数", number: "请填写一个数字" },
+                    AdminAddIntegral: { required: "管理员加分分数", number: "请填写一个数字" }
+                },
+                submitHandler: function (form) {
+                    $.post("/System/CalculatorSetting", $("#data-form").serialize(),
+                        function (data) {
+                            alert(data.msg);
+                            if (data.result)
+                                window.location.href = "/System/Setting/c";
+                            return false;
+                        }, "Json");
+                }
+            });
+
+            this.search();
+        },
+        search: function () {
+            $("#dataTable").dataTable().fnDestroy();
+            $('#dataTable').dataTable({
+                "bProcessing": true,
+                "bSort": false,
+                "bServerSide": true,
+                "bPaginate": false,
+                "aoColumns": [
+                    { "mDataProp": "Name" },
+                    { "mDataProp": "PerViewIntegral" },
+                    { "mDataProp": "SignIntegral" },
+                    { "mDataProp": "SpreadIntegral" },
+                    { "mDataProp": "AdminAddIntegral" },
+                    { "mDataProp": "Contents" },
+                    { "mDataProp": "CreationDate" },
+                    { "mDataProp": "Operate" }
+                ],
+                "sAjaxSource": "/System/CalculatorSettingList",
+                "sServerMethod": "POST",
+                "fnServerParams": function (aoData) { },
+                "bFilter": false,
+                "sDom": 'frtip'
+            });
+        }
+    }
+
+    $(function () { op.init(); })
+</script>

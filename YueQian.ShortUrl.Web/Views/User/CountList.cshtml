@@ -1,0 +1,55 @@
+﻿@model YueQian.ShortUrl.Models.CountViewModel
+@using YueQian.ShortUrl.Extensions;
+
+@{
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+<script src="~/Scripts/My97DatePicker/WdatePicker.js"></script>
+<div class="tab-content default-tab" id="tab1">
+    <form action="" method="get">
+        <div>
+            <input type="text" class="text-input" style="width:120px;" name="keyword" value="@Model.SearchModel.Keyword" placeholder="关键词" />
+            <input type="text" class="text-input Wdate" style="width: 80px;" onclick="WdatePicker()" readonly="readonly" name="startDate" value="@Model.SearchModel.StartDate" placeholder="开始时间" />
+            <input type="text" class="text-input Wdate" style="width: 80px;" onclick="WdatePicker()" readonly="readonly" name="endDate" value="@Model.SearchModel.EndDate" placeholder="结束时间" />
+            <input class="button" type="submit" value="搜索" />
+            <input class="button" type="reset" value="重置" onclick="javascript: window.location.href = '/User/List'" />
+        </div>
+    </form>
+    <table class="datalist">
+        <thead>
+            <tr>
+                <th>
+                   积分类型
+                </th>
+                <th style="width: 120px;">
+                    积分时间
+                </th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <td colspan="6">
+                    @Html.Pager()
+                    <div class="clear">
+                    </div>
+                </td>
+            </tr>
+        </tfoot>
+        <tbody>
+            @if (Model.List != null)
+            {
+                var i = 0;
+                foreach (var item in Model.List)
+                {
+                    <tr class="@(i % 2 == 1 ? "alt" : "n")">
+                        <td style="width:120px;">
+                            @Html.Raw(item.Title)
+                        </td>
+                        <td>@item.DateTimeString</td>
+                    </tr>
+                    i++;
+                }
+            }
+        </tbody>
+    </table>
+</div>

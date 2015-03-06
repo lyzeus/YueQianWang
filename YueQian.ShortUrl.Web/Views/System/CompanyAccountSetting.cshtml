@@ -1,0 +1,186 @@
+﻿@using YueQian.ShortUrl.Extensions;
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="row-fluid">
+    <p>
+        <button class="btn btn-primary" onclick="op.add()"><i class="icon-glass"></i>新增帐号</button>
+        <a class="btn btn-primary" href="/System/Setting"><i class="icon-undo"></i>返回设置</a>
+    </p>
+    <div class="row-fluid" id="add" style="display: none;">
+        <div class="widget-box">
+            <div class="widget-header">
+                <h4>财务账号</h4>
+            </div>
+            <div class="widget-body">
+                <form class="form-horizontal" id="data-form">
+                    <div class="control-group">
+                        <input type="hidden" name="Id" id="Id" value="0" />
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="PaymentId">帐号类型</label>
+                        <div class="controls">
+                            @Html.PaymentSelect("PaymentId", 0, new { onchange = "paymentChange(this)" })
+                        </div>
+                    </div>
+                    <div class="control-group" id="pbank" style="display: none;">
+                        <label class="control-label" for="AccountBank">开户行</label>
+                        <div class="controls">
+                            <input type="text" id="AccountBank" name="AccountBank" placeholder="开户行" />
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="Account">帐号</label>
+                        <div class="controls">
+                            <input type="text" id="Account" name="Account" placeholder="帐号" />
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="RealName">账户名</label>
+                        <div class="controls">
+                            <input type="text" id="RealName" name="RealName" placeholder="账户名" />
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="Contents">说明</label>
+                        <div class="controls">
+                            <textarea class="span8 limited" id="Contents" name="Contents" data-maxlength="120" maxlength="120"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button class="btn btn-info" type="submit"><i class="icon-ok"></i>提交</button>
+                        &nbsp; &nbsp; &nbsp;
+                        <button class="btn" type="reset" onclick="op.addcancel()"><i class="icon-undo"></i>取消</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="hr"></div>
+    </div>
+    <div class="table-header">
+    </div>
+    <table id="dataTable" class="table table-hover table-nomargin table-striped table-bordered">
+        <thead>
+            <tr>
+                <th style="width: 50px;">类型</th>
+                <th style="width: 50px;">账户名</th>
+                <th style="width: 200px;">开户行</th>
+                <th style="width: 200px;">帐号</th>
+                <th>说明</th>
+                <th style="width: 140px;">更新时间</th>
+                <th style="width: 50px;">操作</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script type="text/javascript" src="/Content/admin/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="/Content/admin/js/jquery.dataTables.bootstrap.js"></script>
+<script type="text/javascript">
+    var op = {
+        add: function () {
+            $("#add").slideDown();
+        },
+        edit: function (id) {
+            $.post("/System/CompanyAccountSetting", { eId: id }, function (data) {
+                if (data.result) {
+                    $("#Id").val(data.model.Id);
+                    $("#AccountBank").val(data.model.AccountBank);
+                    $("#Account").val(data.model.Account);
+                    $("#RealName").val(data.model.RealName);
+                    $("#Contents").text(data.model.Contents);
+                    $("#add").slideDown();
+                }
+                else {
+                    alert(data.model);
+                    return false;
+                }
+            }, "Json");
+        },
+        addcancel: function () {
+            $("#Id").val("0");
+            $("#AccountBank").val("").rules("remove");
+            $("#Account").val("");
+            $("#RealName").val("");
+            $("#Contents").text("");
+
+            $("#pbank").hide();
+            $("#add").slideUp();
+        },
+        init: function () {
+            $("#data-form").validate({
+                errorElement: "span",
+                errorClass: "invalid",
+                rules: {
+                    Account: { required: true },
+                    RealName: { required: true }
+                },
+                messages: {
+                    Account: { required: "请输入帐号" },
+                    RealName: { required: "请输入账户名" }
+                },
+                submitHandler: function (form) {
+                    $.post("/System/CompanyAccountSetting", $("#data-form").serialize(),
+                        function (data) {
+                            alert(data.msg);
+                            if (data.result)
+                                window.location.href = "/System/Setting/Account";
+                            return false;
+                        }, "Json");
+                }
+            });
+
+            if ($("#PaymentId").val() == 2) {
+                $("#pbank").show();
+                $("#AccountBank").rules("add", {
+                    required: true,
+                    messages: {
+                        required: "请输入开户行"
+                    }
+                });
+            }
+            this.search();
+        },
+        search: function () {
+            $("#dataTable").dataTable().fnDestroy();
+            $('#dataTable').dataTable({
+                "bProcessing": true,
+                "bSort": false,
+                "bServerSide": true,
+                "bPaginate": false,
+                "aoColumns": [
+                    { "mDataProp": "PaymentType" },
+                    { "mDataProp": "RealName" },
+                    { "mDataProp": "AccountBank" },
+                    { "mDataProp": "Account" },
+                    { "mDataProp": "Contents" },
+                    { "mDataProp": "CreationDate" },
+                    { "mDataProp": "Operate" }
+                ],
+                "sAjaxSource": "/System/CompanyAccountList",
+                "sServerMethod": "POST",
+                "fnServerParams": function (aoData) { },
+                "bFilter": false,
+                "sDom": 'frtip'
+            });
+        }
+    }
+    function paymentChange(select) {
+        if (select.value == 2) {
+            $("#pbank").show();
+            $("#AccountBank").rules("add", {
+                required: true,
+                messages: {
+                    required: "请输入开户行"
+                }
+            });
+        }
+        else {
+            $("#pbank").hide();
+            $("#AccountBank").val("").rules("remove");
+        }
+    }
+    $(function () { op.init(); })
+</script>

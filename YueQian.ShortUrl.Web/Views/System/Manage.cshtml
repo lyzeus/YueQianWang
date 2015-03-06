@@ -1,0 +1,74 @@
+﻿@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<div class="widget-box">
+    <div class="widget-header">
+        <h4>账户信息</h4>
+    </div>
+    <div class="widget-body">
+        <form class="form-horizontal" id="data-form">
+            @Html.AntiForgeryToken()
+            <div class="control-group">
+                <input type="hidden" name="Id" id="Id" value="0" />
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="OldPassword">原密码</label>
+                <div class="controls">
+                    <input type="password" id="OldPassword" name="OldPassword" placeholder="名称">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="NewPassword">新密码</label>
+                <div class="controls">
+                    <input type="password" id="NewPassword" name="NewPassword" placeholder="积分">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="ConfirmPassword">密码确认</label>
+                <div class="controls">
+                    <input type="password" id="ConfirmPassword" name="ConfirmPassword" placeholder="系数">
+                </div>
+            </div>
+            <div class="form-actions">
+                <button class="btn btn-info" type="submit"><i class="icon-ok"></i>提交</button>
+                &nbsp; &nbsp; &nbsp;
+                        <button class="btn" type="reset" onclick="op.addcancel()"><i class="icon-undo"></i>取消</button>
+            </div>
+        </form>
+    </div>
+</div>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script type="text/javascript" src="/Content/admin/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="/Content/admin/js/jquery.dataTables.bootstrap.js"></script>
+<script type="text/javascript">
+    var op = {
+        init: function () {
+            $("#data-form").validate({
+                errorElement: "span",
+                errorClass: "invalid",
+                rules: {
+                    OldPassword: { required: true },
+                    NewPassword: { required: true, minlength: 6 },
+                    ConfirmPassword: { required: true, equalTo: "#NewPassword" }
+                },
+                messages: {
+                    OldPassword: { required: "请输入原始密码" },
+                    NewPassword: { required: "请输入新密码", minlength: "密码不少于6位" },
+                    ConfirmPassword: { required: "再一次输入新密码", equalTo: "两次输入的密码不一致" }
+                },
+                submitHandler: function (form) {
+                    $.post("/System/Manage", $("#data-form").serialize(),
+                        function (data) {
+                            alert(data.msg);
+                            if (data.result) {
+                                window.location.href = data.url;
+                            }
+                            return false;
+                        }, "Json");
+                }
+            });
+        }
+    }
+
+    $(function () { op.init(); })
+</script>

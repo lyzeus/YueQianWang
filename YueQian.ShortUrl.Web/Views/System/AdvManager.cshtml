@@ -1,0 +1,332 @@
+﻿@using YueQian.ShortUrl.Extensions
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<script type="text/javascript" src="~/Scripts/My97DatePicker/WdatePicker.js"></script>
+<script src="~/Scripts/jquery.flash.js"></script>
+
+<div class="row-fluid">
+    <p>
+        <button class="btn btn-primary" onclick="op.add()"><i class="icon-glass"></i>新增广告</button>
+    </p>
+    <div class="row-fluid" id="add" style="display: none;">
+        <div class="widget-box">
+            <div class="widget-header">
+                <h4>广告内容</h4>
+            </div>
+            <div class="widget-body">
+                <form class="form-horizontal" id="data-form" method="post" enctype="multipart/form-data">
+                    <div class="control-group">
+                        <input type="hidden" name="Id" id="Id" value="0" />
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="Name">位置</label>
+                        <div class="controls">
+                            @Html.AdvtisementPositionSelect("PositionNumberId", 0, new { onchange = "change(this)" }, includePrice: true)
+                            <input type="hidden" id="PositionNumber" name="PositionNumber" value="" />
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="ActualPrice">价格</label>
+                        <div class="controls">
+                            <input type="text" id="ActualPrice" name="ActualPrice" placeholder="价格" />
+                            <span id="ReferencePrice" class="help-inline"></span>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="AdvertiseNumber">名称</label>
+                        <div class="controls">
+                            <input type="text" id="AdvertiseNumber" name="AdvertiseNumber" placeholder="名称" class="span8 limited" />
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="Url">链接地址</label>
+                        <div class="controls">
+                            <input type="text" id="Url" name="Url" placeholder="链接地址" class="span8 limited" />
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="StartTime">开始时间</label>
+                        <div class="controls">
+                            <input type="text" id="StartTime" name="StartTime" placeholder="开始时间" onfocus="WdatePicker({startDate:'%y-%M-%d 00:00:00',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})" />
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="EndTime">结束时间</label>
+                        <div class="controls">
+                            <input type="text" id="EndTime" name="EndTime" placeholder="结束时间" onfocus="WdatePicker({startDate:'%y-%M-d% 00:00:00',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})" />
+                        </div>
+                    </div>
+                    <div class="control-group" id="preview" style="display:none;">
+                        <label class="control-label" for="file1">预览</label>
+                        <div class="controls">
+                            <img id="previewImg" src="#" style="display:none;" />
+                            <div id="previewFlash"></div>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="file1">上传文件</label>
+                        <div class="controls">
+                            <div class="span2">
+                                <div class="ace-file-input">
+                                    <input type="file" name="file1" id="file1">
+                                    <label data-title="选择文件" for="file1">
+                                        <span data-title="无文件"><i class="icon-upload-alt"></i></span>
+                                    </label>
+                                </div>
+                                <input type="hidden" id="FilePath" name="FilePath" value="" />
+                                <input type="hidden" id="AdvType" name="AdvType" value="1" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="Contents">内容</label>
+                        <div class="controls">
+                            <textarea class="span8 limited" id="Contents" name="Contents" data-maxlength="120" maxlength="120"></textarea>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="IsAvailable">有效性</label>
+                        <div class="controls">
+                            <label>
+                                <input id="IsAvailableCheck" type="checkbox" onclick="javascript: document.getElementById('IsAvailable').value = this.checked" /><span class="lbl"> 有效</span>
+                                <input id="IsAvailable" name="IsAvailable" type="hidden" />
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button class="btn btn-info" type="submit"><i class="icon-ok"></i>提交</button>
+                        &nbsp; &nbsp; &nbsp;
+                        <button class="btn" type="reset" onclick="op.addcancel()"><i class="icon-undo"></i>取消</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="hr"></div>
+    </div>
+    <div class="row-fluid">
+        <div class="table-header">
+        </div>
+        <div class="toolbar">
+            <form class="form-horizontal" id="searchForm">
+                <div class="control-group">
+                    <span>位置:</span>
+                    @Html.AdvtisementPositionSelect("positionnumber", 0, new { @class = "input" }, label: "全部")
+                    <span>更新时间:</span><input type="text" name="periodtime" id="periodtime" style="width: 175px;" />
+                    <button type="button" onclick="op.search();" class="btn btn-small btn-primary" style="margin-left: 10px;">搜 索</button>
+                    <button type="reset" class="btn btn-small btn-inverse" style="margin-left: 20px;">重 置</button>
+                </div>
+            </form>
+        </div>
+        <table id="dataTable" class="table table-hover table-nomargin table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th style="width: 10px;">
+                        <label>
+                            <input type="checkbox" id="check_all" /><span class="lbl"></span>
+                        </label>
+                    </th>
+                    <th style="width: 50px;">
+                        有效性
+                    </th>
+                    <th style="width: 186px;">
+                        广告位置
+                    </th>
+                    <th style="width: 180px;">
+                        广告名称
+                    </th>
+                    <th>
+                        起止时间
+                    </th>
+                    <th style="width: 140px;">
+                        更新时间
+                    </th>
+                    <th style="width: 100px;">
+                        操作
+                    </th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+<link href="~/Content/admin/css/daterangepicker.css" rel="stylesheet" />
+<script type="text/javascript" src="/Content/admin/js/moment.min.js"></script>
+<script type="text/javascript" src="/Content/admin/js/daterangepicker.js"></script>
+<script type="text/javascript" src="/Content/admin/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="/Content/admin/js/jquery.dataTables.bootstrap.js"></script>
+<script type="text/javascript" src="/Scripts/jquery.validate.min.js"></script>
+<script type="text/javascript" src="/Scripts/jquery.ajaxfileupload.js"></script>
+<script type="text/javascript">
+    function change(dropdownlist) {
+        var value = dropdownlist.value.split('&');
+        $("#PositionNumber").val(value[0]);
+        $("#ReferencePrice").text("参考价:" + value[1]);
+    }
+    var op = {
+        add: function () {
+            op.addcancel();
+            var value = document.getElementById("PositionNumberId").value.split('&');
+            $("#PositionNumber").val(value[0]);
+            $("#ReferencePrice").text("参考价:" + value[1]);
+            $("#add").slideDown();
+        },
+        edit: function (id) {
+            $.post("/System/AdvertisementInfo", { eId: id }, function (data) {
+                if (data.result) {
+                    $("#Id").val(data.model.Id);
+                    $("#ActualPrice").val(data.model.ActualPrice);
+                    $("#AdvertiseNumber").val(data.model.AdvertiseNumber);
+                    $("#PositionNumber").val(data.model.PositionNumber);
+                    $("#Url").val(data.model.Url);
+                    var ddl = document.getElementById("PositionNumberId");
+                    for (var i = 0; i < ddl.options.length; i++) {
+                        var item = ddl.options[i];
+                        if (item.value.indexOf(data.model.PositionNumber) >= 0) {
+                            document.getElementById("PositionNumberId").value = item.value;
+                            $("#ReferencePrice").text("参考价:" + item.value.split('&')[1]);
+                            break;
+                        }
+                    }
+
+                    $("#StartTime").val(data.model.StartTime);
+                    $("#EndTime").val(data.model.EndTime);
+
+                    $("#FilePath").val(data.model.FilePath);
+                    $("#AdvType").val(data.model.AdvType);
+
+                    if (~~data.model.AdvType > 1) {
+                        switch (~~data.model.AdvType) {
+                            default:
+                            case 2:
+                                $("#previewImg").attr({ src: data.model.FilePath, width: data.model.Width, height: data.model.Height }).show();
+                                $("#previewFlash").empty();
+                                break;
+                            case 3:
+                                $("#previewFlash").empty().flash({ src: data.model.FilePath, width: data.model.Width, height: data.model.Height });
+                                $("#previewImg").attr("src", "").hide();
+                                break;
+                        }
+                        $("#preview").show();
+                    }
+
+
+                    $("#Contents").text(data.model.Contents);
+                    document.getElementById("IsAvailable").value = document.getElementById("IsAvailableCheck").checked = data.model.IsAvailable;
+
+                    $("#add").slideDown();
+                }
+                else {
+                    alert(data.model);
+                    return false;
+                }
+            }, "Json");
+        },
+        addcancel: function () {
+            $("#Id").val("0");
+            $("#ActualPrice").val("0");
+            $("#AdvertiseNumber").val("");
+            $("#Url").val("");
+            $("#StartTime").val("");
+            $("#EndTime").val("");
+            $("#FilePath").val("");
+            $("#AdvType").val("");
+            $("#Contents").text("");
+            $("#previewImg").attr({ "src": "", "display": "none" });
+            $("#previewFlash").empty();
+
+            $("#add").slideUp();
+        },
+        init: function () {
+
+            $('#periodtime').daterangepicker();
+
+            $("#file1").AjaxFileUpload({
+                action: "/System/Upload/Ad",
+                onComplete: function (filename, response) {
+                    var data = eval(response);
+                    var value = document.getElementById("PositionNumberId").value.split('&');
+                    if (data.format == "swf") {
+                        $("#previewFlash").empty().flash({ src: data.filename, width: value[2], height: value[3] });
+                        $("#previewImg").attr("src", "").hide();
+                        $("#AdvType").val(3);
+
+                    } else {
+                        $("#previewImg").attr({ src: data.filename, width: value[2], height: value[3] }).show();
+                        $("#previewFlash").empty();
+                        $("#AdvType").val(2);
+                    }
+                    $("#FilePath").val(data.filename);
+                    $("#preview").show();
+                }
+            });
+
+            $("#data-form").validate({
+                errorElement: "span",
+                errorClass: "invalid",
+                rules: {
+                    ActualPrice: { required: true, number: true },
+                    AdvertiseNumber: { required: true },
+                },
+                messages: {
+                    ActualPrice: { required: "售价", number: "请填写一个数字" },
+                    AdvertiseNumber: { required: "请填写名称" },
+
+                },
+                submitHandler: function (form) {
+                    $.post("/System/AdvertisementInfo", $("#data-form").serialize(),
+                        function (data) {
+                            alert(data.msg);
+                            if (data.result)
+                                window.location.href = "/System/AdvManager";
+                            return false;
+                        }, "Json");
+                }
+            });
+
+            this.search();
+        },
+
+        search: function () {
+            $("#dataTable").dataTable().fnDestroy();
+            $('#dataTable').dataTable({
+                "bProcessing": true,
+                "bSort": false,
+                "bServerSide": true,
+                "iDisplayLength": 20,
+                "bPaginate": true,
+                "aoColumns": [
+                    { "mDataProp": "CheckBox" },
+                    { "mDataProp": "Available" },
+                    { "mDataProp": "PositionNumber" },
+                    { "mDataProp": "AdvertiseNumber" },
+                    { "mDataProp": "DataRange" },
+                    { "mDataProp": "CreationDate" },
+                    { "mDataProp": "Operate" }
+                ],
+                "sAjaxSource": "/System/AdvList?cach=" + Math.random(),
+                "sServerMethod": "POST",
+                "fnServerParams": function (aoData) {
+                    aoData.push({
+                        "name": "positionnumber",
+                        "value": $("#positionnumber").val()
+                    }),
+                    aoData.push({
+                        "name": "StartTime",
+                        "value": $("#periodtime").val().split('-')[0] || "@(DateTime.MinValue.ToString())"
+                    }),
+                    aoData.push({
+                        "name": "EndTime",
+                        "value": $("#periodtime").val().split('-')[1] || "@(DateTime.Now.ToString())"
+                    })
+                },
+                "pagingType": "full_numbers",
+                "bFilter": false,
+                "sDom": 'frtip'
+            });
+        }
+    }
+
+    $(function () { op.init(); })
+</script>

@@ -1,0 +1,276 @@
+﻿@model YueQian.ShortUrl.Admin.ViewModels.AdminCommonModel
+@using YueQian.ShortUrl.Extensions
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<div class="row-fluid">
+    <div class="row-fluid">
+        <div class="table-header">
+        </div>
+        <div class="toolbar">
+            <form class="form-horizontal" id="searchForm">
+                <div class="control-group">
+                    <span>用户:</span><input type="text" name="username" id="username" class="input-mini" value="@Model.UserName" />
+                    <span>状态:</span>@(Html.EnumSelect<YueQian.ShortUrl.Models.Enums.WithdrawalsType>("WithdrawalsType", 0, new { style = "width:100px;" }, "全部"))
+                    <span>时间:</span><input type="text" name="periodtime" id="periodtime" style="width: 175px;" />
+                    <button type="button" onclick="op.search();" class="btn btn-small btn-primary" style="margin-left: 10px;">搜 索</button>
+                    <button type="reset" class="btn btn-small btn-inverse" style="margin-left: 20px;">重 置</button>
+                </div>
+            </form>
+        </div>
+        <table id="dataTable" class="table table-hover table-nomargin table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th style="width: 10px;">
+                        <label>
+                            <input type="checkbox" id="check_all" /><span class="lbl"></span>
+                        </label>
+                    </th>
+                    <th style="width: 100px;">
+                        用户名
+                    </th>
+                    <th style="width: 60px;">
+                        状态
+                    </th>
+                    <th style="width: 60px;">
+                        提现金额
+                    </th>
+                    <th>
+                        详情
+                    </th>
+                    <th style="width: 80px;">
+                        提交时间
+                    </th>
+                    <th style="width: 100px;">
+                        操作
+                    </th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+<div class="span4" id="rejectForm" style="width: 400px; height: 260px; display: none;">
+    <div class="widget-box">
+        <div class="widget-header">
+            <h4>拒绝提现</h4>
+        </div>
+        <div class="widget-body">
+            <div class="widget-body-inner" style="display: block;">
+                <div class="widget-main">
+                    <div class="row-fluid">
+                        <textarea class="span12" id="reject" placeholder="拒绝原因" style="margin: 0px; height: 120px;"></textarea>
+                    </div>
+                    <div class="form-actions center">
+                        <button id="rbtn-submit" onclick="return false;" class="btn btn-small btn-success">提交 <i class="icon-ok icon-on-right"></i></button>
+                        <button id="rbtn-cancel" onclick="op.closeDialog();" class="btn btn-small btn-cancel">取消 <i class="icon-arrow-right icon-on-right"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="span4" id="payForm" style="width: 400px; height: 260px; display: none;">
+    <div class="widget-box">
+        <div class="widget-header">
+            <h4>打款</h4>
+        </div>
+        <div class="widget-body">
+            <div class="widget-body-inner" style="display: block;">
+                <div class="widget-main">
+                    <div class="row-fluid">
+                        @Html.CompayAccountSelect("CompanyAccountId", 0, new { })
+                    </div>
+                    <div style="height: 5px;"></div>
+                    <div class="row-fluid">
+                        <input class="span12" id="TradeCode" placeholder="交易号" style="margin: 0px;" />
+                    </div>
+                    <div style="height: 5px;"></div>
+                    <div class="row-fluid">
+                        <textarea class="span12" id="PayContents" name="PayContents" placeholder="备注" style="margin: 0px; height: 120px;"></textarea>
+                    </div>
+                    <div class="form-actions center">
+                        <button id="pbtn-submit" onclick="return false;" class="btn btn-small btn-success">提交 <i class="icon-ok icon-on-right"></i></button>
+                        <button id="pbtn-cancel" onclick="op.closeDialog();" class="btn btn-small btn-cancel">取消 <i class="icon-arrow-right icon-on-right"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="span4" id="logsForm" style="width: 400px; height: 260px; display: none;">
+    <div class="widget-box">
+        <div class="widget-header">
+            <h4>日志</h4>
+        </div>
+        <div class="widget-body">
+            <div class="widget-body-inner" style="display: block;">
+                <div class="widget-main">
+                    <div style="height: 5px;"></div>
+                    <div class="row-fluid" id="logs">
+
+                    </div>
+                    <div class="form-actions center">
+                        <button id="pbtn-cancel" onclick="op.closeDialog();" class="btn btn-small btn-success">确定 <i class="icon-arrow-right icon-on-right"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<link href="~/Content/admin/css/daterangepicker.css" rel="stylesheet" />
+<script type="text/javascript" src="/Content/admin/js/moment.min.js"></script>
+<script type="text/javascript" src="/Content/admin/js/daterangepicker.js"></script>
+<script type="text/javascript" src="/Content/admin/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="/Content/admin/js/jquery.dataTables.bootstrap.js"></script>
+<script type="text/javascript">
+    var op = {
+        init: function () {
+            $('#periodtime').daterangepicker();
+            this.search();
+        },
+        closeDialog: function () {
+            easyDialog.close();
+        },
+        logs: function (id) {
+            easyDialog.open({
+                container: 'logsForm',
+                follow: 'lg' + id,
+                followX: -160,
+                followY: -3,
+                callback: function () { },
+                overlay: true
+            });
+            $.post("/System/Logs", { id: id }, function (data) {
+                if (data.result) {
+                    var c = "<ul class=\"unstyled spaced2\">";
+                    for (var i = 0; i < data.msg.length; i++) {
+                        var item = data.msg[i];
+                        c += "<li><i class=\"icon-ok green\"></i>" + item.Contents + "<span style=\"float:right;\">" + item.CreationDate + "</span></li>";
+                    }
+                    c += "</ul>";
+                    $("#logs").empty().html(c);
+                } else {
+                    $("#logs").empty().html("获取日志失败");
+                }
+                return false;
+            }, "JSON");
+
+        },
+        pass: function (id) {
+            $.post("/System/Pass", { id: id }, function (data) {
+                alert(data.msg);
+                if (data.result)
+                    op.search();
+                return false;
+            }, "JSON");
+        },
+        reject: function (id) {
+            easyDialog.open({
+                container: 'rejectForm',
+                follow: 'rj' + id,
+                followX: -320,
+                followY: -3,
+                callback: function () {
+                    $("#reject").val("");
+                },
+                overlay: true
+            });
+
+            $("#rbtn-submit").unbind("click").bind("click", function () {
+                $.post("/System/Reject", { id: id, reason: $("#reject").val() }, function (data) {
+                    alert(data.msg);
+                    if (data.result) {
+                        op.search();
+                        op.closeDialog();
+                    }
+                    return false;
+                }, "JSON");
+            });
+
+            $("#rbtn-cancel").unbind("click").bind("click", function () {
+                op.closeDialog();
+            });
+        },
+        pay: function (id) {
+            easyDialog.open({
+                container: 'payForm',
+                follow: 'py' + id,
+                followX: -320,
+                followY: -3,
+                callback: function () {
+                    $("#reject").val("");
+                },
+                overlay: true
+            });
+
+            $("#pbtn-submit").unbind("click").bind("click", function () {
+                $.post("/System/Pay",
+                    {
+                        id: id,
+                        CompanyAccountId: document.getElementById("CompanyAccountId").value,
+                        TradeCode: document.getElementById("TradeCode").value,
+                        Contents: document.getElementById("PayContents").value
+                    },
+                    function (data) {
+                        alert(data.msg);
+                        if (data.result) {
+                            op.search();
+                            op.closeDialog();
+                        }
+                        return false;
+                    }, "JSON");
+            });
+
+            $("#pbtn-cancel").unbind("click").bind("click", function () {
+                op.closeDialog();
+            });
+
+        },
+        search: function () {
+            $("#dataTable").dataTable().fnDestroy();
+            $('#dataTable').dataTable({
+                "bProcessing": true,
+                "bSort": false,
+                "bServerSide": true,
+                "iDisplayLength": 20,
+                "bPaginate": true,
+                "aoColumns": [
+                    { "mDataProp": "CheckBox" },
+                    { "mDataProp": "UserId" },
+                    { "mDataProp": "State" },
+                    { "mDataProp": "Amount" },
+                    { "mDataProp": "Detail" },
+                    { "mDataProp": "CreationDate" },
+                    { "mDataProp": "Operate" }
+                ],
+                "sAjaxSource": "/System/WithdrawalsList?cach=" + Math.random(),
+                "sServerMethod": "POST",
+                "fnServerParams": function (aoData) {
+                    aoData.push({
+                        "name": "username",
+                        "value": $("#username").val()
+                    }),
+                    aoData.push({
+                        "name": "state",
+                        "value": $("#WithdrawalsType").val()
+                    }),
+                    aoData.push({
+                        "name": "StartTime",
+                        "value": $("#periodtime").val().split('-')[0] || "@(DateTime.MinValue.ToString())"
+                    }),
+                    aoData.push({
+                        "name": "EndTime",
+                        "value": $("#periodtime").val().split('-')[1] || "@(DateTime.Now.ToString())"
+                    })
+                },
+                "pagingType": "full_numbers",
+                "bFilter": false,
+                "sDom": 'frtip'
+            });
+        }
+    }
+
+
+    $(function () { op.init(); })
+</script>

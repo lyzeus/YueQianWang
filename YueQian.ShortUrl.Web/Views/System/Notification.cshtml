@@ -1,0 +1,87 @@
+﻿@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<div class="row-fluid">
+    <div class="row-fluid">
+        <div class="table-header">
+        </div>
+
+        <div class="toolbar">
+            <form class="form-horizontal" id="searchForm">
+                <div class="control-group">
+                    <span> 关键词:</span><input type="text" name="keyword" id="keyword" class="input-xlarge" />
+                    <span>注册时间:</span><input type="text" name="periodtime" id="periodtime" style="width:175px;" />
+                    <button type="button" onclick="op.search();" class="btn btn-small btn-primary" style="margin-left:10px;">搜 索</button>
+                    <button type="reset" class="btn btn-small btn-inverse" style="margin-left:20px;">重 置</button>
+                    <a  class="btn btn-small btn-success" href="/System/NotificationSend" style="float:right;">发送通知</a>
+
+                </div>
+            </form>
+        </div>
+        <table id="dataTable" class="table table-hover table-nomargin dataTable table-bordered table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th style="width:10px;"><label><input type="checkbox" id="check_all" /><span class="lbl"></span></label> </th>
+                    <th style="width:80px;">接收人</th>
+                    <th style="width:60px;">消息类型</th>
+                    <th>消息内容	</th>
+                    <th style="width:135px;">接收时间</th>
+                    <th style="width:175px;">当前状态</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+<link href="~/Content/admin/css/daterangepicker.css" rel="stylesheet" />
+<script type="text/javascript" src="/Content/admin/js/moment.min.js"></script>
+<script src="~/Content/admin/js/daterangepicker.js"></script>
+<script type="text/javascript" src="/Content/admin/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="/Content/admin/js/jquery.dataTables.bootstrap.js"></script>
+<script type="text/javascript">
+    var op = {
+        init: function () {
+            $('#periodtime').daterangepicker();
+            this.search();
+        },
+        search: function () {
+            $("#dataTable").dataTable().fnDestroy();
+            $('#dataTable').dataTable({
+                "bProcessing": true,
+                "bSort": false,
+                "bServerSide": true,
+                "iDisplayLength": 20,
+                "bPaginate": true,
+                "aoColumns": [
+                    { "mDataProp": "CheckBox" },
+                    { "mDataProp": "Receiver" },
+                    { "mDataProp": "MessageType" },
+                    { "mDataProp": "Contents" },
+                    { "mDataProp": "CreationDate" },
+                    { "mDataProp": "Status" }
+                ],
+                "sAjaxSource": "/System/NotificationList",
+                "sServerMethod": "POST",
+                "fnServerParams": function (aoData) {
+                    aoData.push({
+                        "name": "keyword",
+                        "value": $("#keyword").val()
+                    }),
+                    aoData.push({
+                        "name": "StartTime",
+                        "value": $("#periodtime").val().split('-')[0] || "@(DateTime.MinValue.ToString())"
+                    }),
+                    aoData.push({
+                        "name": "EndTime",
+                        "value": $("#periodtime").val().split('-')[1] || "@(DateTime.Now.ToString())"
+                    })
+                },
+                "bFilter": false,
+                "sDom": 'frtip'
+            });
+        }
+    }
+
+
+    $(function () { op.init(); })
+</script>

@@ -1,0 +1,265 @@
+﻿@{Layout = null;}
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <title>跃迁网 | 轻松网赚 短址跃迁</title>
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <meta name="keywords" content="跃迁网,短地址,短址,转址,网赚">
+    <meta name="description" content="跃迁网生成短址,分享获得收益">
+
+    <meta name="viewport" content="width=device-width" />
+    @Styles.Render("~/Content/css")
+    <script src="~/Scripts/jquery.js"></script>
+    <script src="~/Scripts/jquery.slide.js"></script>
+    <style type="text/css">
+        * { font-family: 'Microsoft YaHei'; }
+        body { background: #f2f3f7; }
+        /*.main { background: url(images/main-bg.jpg) no-repeat center; height: 502px; margin: 0; padding: 0; }*/
+        .main-content { width: 900px; margin: 0 auto; }
+        .top { height: 30px; }
+            .top > .user { float: right; }
+                .top > .user a { font-size: 14px; color: #ffbd56; }
+                    .top > .user a:hover { text-decoration: underline; }
+        .logo { text-align: center; }
+        .create { position: relative; width: 730px; margin: 0 auto; border: 1px solid #f90; border-radius: 5px; height: 40px; background: #fff; }
+            .create input { float: left; height: 32px; line-height: 32px; border: none; outline: none; }
+                .create input.text { width: 600px; margin-left: 5px; margin-top: 4px; font-size: 18px; }
+                .create input.submit { float: right; cursor: pointer; width: 120px; height: 40px; line-height: 40px; background: #f0971f; font-size: 18px; color: #fff; }
+                    .create input.submit:active { background-color: #f90; }
+
+        #info a:hover { text-decoration: underline; }
+        #info .reg { float: right; color: #000; }
+            #info .reg a { color: #f00; }
+
+        #info .login { color: #0f0; float: right; margin-right: 10px; }
+
+        #info { position: absolute; top: 44px; width: 600px; border: 1px solid #f90; border-radius: 5px; height: 30px; line-height: 30px; vertical-align: middle; background: #fce9ae; display: none; font-size: 14px; text-indent: 5px; }
+        .error { color: #e2873e; }
+        .banner { width: 900px; margin: 0 auto; }
+
+        /* 本例子css */
+        .slideBox { width: 900px; height: 300px; overflow: hidden; position: relative; }
+
+            .slideBox .hd { height: 20px; position: absolute; bottom: 15px; z-index: 1; width: 900px; }
+                .slideBox .hd ul { text-align: center; }
+                    .slideBox .hd ul li { display: inline-block; margin-right: 2px; width: 10px; height: 10px; line-height: 10px; text-align: center; background: #fff; border: 1px solid #f09f31; cursor: pointer; border-radius: 12px; }
+                        .slideBox .hd ul li.on { background: #f0971f; color: #fff; }
+
+            .slideBox .bd { }
+                .slideBox .bd li { height: 300px; zoom: 1; vertical-align: middle; }
+                    .slideBox .bd li > div { position: relative; }
+                        .slideBox .bd li > div > img { position: absolute; z-index: 999; right: 0; top: 0; }
+                        .slideBox .bd li > div strong { padding-left: 20px; color: #f0971f; font-size: 30px; line-height: 60px; font-weight: normal; }
+                        .slideBox .bd li > div p { padding-left: 20px; line-height: 30px; font-size: 16px; color: #666; }
+                        .slideBox .bd li > div a:hover { font-size: 20px; text-decoration: underline; }
+        #s1t1 { position: absolute; left: -500px; }
+        #s1p1 { right: -284px; }
+        #s1p2 { right: -300px; top: 40px; }
+
+        #s2t1 { position: absolute; left: -500px; }
+        #s2p1 { top: -284px; z-index: 999; }
+        #s2p2 { top: -284px; z-index: 888; }
+
+        #s3t1 { position: absolute; left: -500px; }
+        #s3p1 { right: -284px; }
+        #s3p2 { right: -300px; top: 40px; }
+    </style>
+
+    @{
+        int num; string mainbg;
+        Random x = new Random();
+        num = x.Next(1, 7);
+        mainbg = "/Images/main-bg" + num + ".jpg";
+    }
+    <script>
+        $(function () {
+
+            $("#createUrl").click(function () {
+                var url = $("#Url").val();
+                if (url.trim().length <= 0) {
+                    $("#info").addClass("error").empty().html("请先输入一个地址");
+                } else {
+                    var webUrl = /((http|https):\/\/)?[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@@?^=%&amp;:/~\+#]*[\w\-\@@?^=%&amp;/~\+#])?/;
+                    var regex = new RegExp(webUrl);
+                    if (!regex.test(url)) {
+                        $("#info").addClass("error").empty().html("您输入的地址不合法");
+                    } else {
+                        $.post("/Home/Create", { Url: url }, function (data) {
+                            if (!data.result) {
+                                $("#info").addClass("error");
+                            }
+                            $("#info").empty().html(data.msg);
+                        }, "JSON");
+                    }
+                }
+                $("#info").slideDown(200);
+            });
+
+            jQuery("#slideBox").slide({
+                mainCell: ".bd ul",
+                effect: "left",
+                autoPlay: true,
+                interTime: 3000,
+                startFun: function (i, c) {
+                    switch (i) {
+                        default:
+                        case 0:
+                            $("#s2t1").css({ display: "none", left: "-500px" });
+                            $("#s2p1").css({ display: "none", top: "-284px" });
+                            $("#s2p2").css({ display: "none", top: "284px" });
+                            break;
+                        case 1:
+                            $("#s3t1").css({ display: "none", left: "-500px" });
+                            $("#s3p1").css({ display: "none", right: "-284px" });
+                            $("#s3p2").css({ display: "none", right: "-300px" });
+                            break;
+                        case 2:
+                            $("#s1t1").css({ display: "none", left: "-500px" });
+                            $("#s1p1").css({ display: "none", right: "-284px" });
+                            $("#s1p2").css({ display: "none", right: "-300px" });
+                            break;
+                    }
+                },
+                endFun: function (i, c) {
+                    switch (i) {
+                        default:
+                        case 0:
+                            $("#s1t1").show().animate({ left: "0px" });
+                            $("#s1p1").show().animate({ right: "10px" }, function () { $("#s1p2").show().animate({ right: "130px", top: "36px;" }); });
+                            break;
+                        case 1:
+                            $("#s2t1").show().animate({ left: "0px" });
+                            $("#s2p2").show().animate({ top: "0px" }, function () { $("#s2p1").show().animate({ top: "0px" }); });
+                            break;
+                        case 2:
+                            $("#s3t1").show().animate({ left: "0px" });
+                            $("#s3p1").show().animate({ right: "10px" }, function () { $("#s3p2").show().animate({ right: "140px", top: "36px;" }); });
+                            break;
+                    }
+                }
+            });
+
+        });
+
+        function AddFavorite() {
+            try {
+                window.external.AddFavorite('http://yqurl.com', '跃迁网 —— 轻松网赚 短址跃迁')
+            } catch (e) { alert('不支持自动添加,请手动添加收藏!'); }
+        }
+    </script>
+</head>
+<body>
+    <div style="background: url(@mainbg) no-repeat center; height: 502px; margin: 0; padding: 0;background-size:cover;">
+        <div class="main-content">
+            <div class="clear height20"></div>
+            <div class="top">
+                @if (Request.IsAuthenticated)
+                {
+                    <div class="user">
+                        <a href="/User">@User.Identity.Name</a>，
+                        @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", style = "display:inline" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <a href="javascript:document.getElementById('logoutForm').submit()">注销！</a>
+                        } | <a href="javascript:AddFavorite();">收藏网站</a>
+                    </div>
+                }
+                else
+                {
+                    <div class="user"><a href="/User/Login">登录</a> | <a href="/User/Register">注册</a> | <a href="javascript:AddFavorite();">收藏网站</a></div>
+                }
+
+            </div>
+            <div class="clear height40"></div>
+            <div class="clear height20"></div>
+            <div class="logo">
+                <a title="跃迁网" href="/">
+                    <img src="~/Images/logo.png" alt="跃迁网" />
+                </a>
+            </div>
+            <div class="clear height30">
+            </div>
+            <div class="create">
+                <input type="text" name="Url" id="Url" value="" class="text" placeholder="请在这里输入链接地址" /><input id="createUrl" class="submit" type="button" value="创建短址" />
+                <div id="info"></div>
+            </div>
+        </div>
+    </div>
+    <div class="clear height30"></div>
+    <div class="banner">
+        <div id="slideBox" class="slideBox">
+            <div class="hd">
+                <ul>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                </ul>
+            </div>
+            <div class="bd">
+                <ul>
+                    <li>
+                        <div>
+                            <div id="s1t1">
+                                <strong>生成短址</strong><br />
+                                <p>
+                                    把冗长网址换算成科学的跃迁短址<br />
+                                    <i>“科学技术就是第一生产力”</i><br />
+                                    <a href="/User/Register">马上注册>></a>
+                                </p>
+                            </div>
+                            <img id="s1p1" src="~/Images/s1p1.png" />
+                            <img id="s1p2" src="~/Images/s1p2.png" />
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <div id="s2t1">
+                                <strong>分享跃迁</strong><br />
+                                <p>
+                                    微博论坛空间随处分享无界限<br />
+                                    <i>“我们不生产网址，我们只是您的搬运工”</i><br />
+                                </p>
+                            </div>
+                            <img id="s2p1" src="~/Images/s2p1.png" />
+                            <img id="s2p2" src="~/Images/s2p2.png" />
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <div id="s3t1">
+                                <strong>获取收益</strong><br />
+                                <p>
+                                    短址每一次访问都将准确的为您计算收益<br />
+                                    <i>“无论是老司机、大神还是LZ好人，</i><br />
+                                    <i>丰厚收益触手可得，做一次伸手党又何妨”</i><br />
+                                </p>
+                            </div>
+                            <img id="s3p1" src="~/Images/s3p1.png" />
+                            <img id="s3p2" src="~/Images/s3p2.png" />
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="clear height30"></div>
+    <div class="foot">
+        <a href="/">首页</a>
+        <a href="/About.html">关于我们</a>
+        <a href="/FAQ.html">常见问题</a>
+        <a href="/Contact.html">联系我们</a>
+        <a href="/Privacy.html">隐私政策</a>
+        <a href="/Terms.html">服务条件</a>
+        <div class="clear height10"></div>
+        <p class="center">©2012-@DateTime.Now.Year <a title="跃迁网" href="http://yqurl.com">跃迁网</a>  yqurl.com.<b><i>Ver.Alpha r128b20150207</i></b> 版权所有</p>
+        <div class="clear height10"></div>
+        <p class="center">
+            <script type="text/javascript">var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://"); document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F6e7a7d8f5271f198868f1eff92245fa3' type='text/javascript'%3E%3C/script%3E"));</script>
+            <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://"); document.write(unescape("%3Cspan id='cnzz_stat_icon_1253211897'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/z_stat.php%3Fid%3D1253211897%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));</script>
+        </p>
+    </div>
+    <div class="clear height20"></div>
+</body>
+</html>

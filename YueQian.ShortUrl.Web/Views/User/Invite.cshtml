@@ -1,0 +1,26 @@
+﻿@{
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+<div class="notification information png_bg" style="background-image:none;">
+    <div>
+        <form>
+
+            <input class="text-input medium-input" id="InviteUrl" name="Url" type="text" value="http://yqurl.com/User/Register?invite=@(ViewBag.Invite)" disabled="disabled" />
+            <input class="button" type="button" value="复制" id="copy-button" data-clipboard-target="InviteUrl" />
+        </form>
+    </div>
+</div>
+<script src="/Scripts/ZeroClipboard/ZeroClipboard.min.js"></script>
+<script>
+    ZeroClipboard.config({
+        moviePath: '/Scripts/ZeroClipboard/ZeroClipboard.swf',
+        swfPath: "/Scripts/ZeroClipboard/ZeroClipboard.swf"
+    });
+
+    var client = new ZeroClipboard($("#copy-button"));
+    client.on("load", function (readyEvent) {
+        client.on("complete", function (client, args) {
+            alert('复制成功');
+        });
+    });
+</script>

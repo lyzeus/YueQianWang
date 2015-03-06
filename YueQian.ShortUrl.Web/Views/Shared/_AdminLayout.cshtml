@@ -1,0 +1,336 @@
+﻿@model YueQian.ShortUrl.ViewModels.ViewModelBase
+@{
+    Layout = null;
+    var action = Request.RequestContext.RouteData.Values["action"].ToString().ToLower();
+    var id = Request.RequestContext.RouteData.Values["id"];
+    var active = "";
+    var open = "";
+    var openCss = "open active";
+    if (id != null)
+    {
+        open = action;
+        active = id.ToString().ToLower();
+        if (string.IsNullOrEmpty(id.ToString()))
+        {
+            openCss = "open";
+        }
+    }
+    else
+    {
+        active = action;
+    }
+}
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8" />
+    <title>管理后台 - 跃迁网</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- basic styles -->
+    <link href="/Content/admin/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="/Content/admin/css/bootstrap-responsive.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/Content/admin/css/font-awesome.min.css" />
+    <!--[if IE 7]>
+          <link rel="stylesheet" href="/Content/admin/css/font-awesome-ie7.min.css" />
+        <![endif]-->
+    <!-- page specific plugin styles -->
+    <!-- ace styles -->
+    <link rel="stylesheet" href="/Content/admin/css/ace.min.css" />
+    <link rel="stylesheet" href="/Content/admin/css/ace-responsive.min.css" />
+    <link rel="stylesheet" href="/Content/admin/css/ace-skins.min.css" />
+    <!--[if lt IE 9]>
+          <link rel="stylesheet" href="/Content/admin/css/ace-ie.min.css" />
+        <![endif]-->
+    <!-- basic scripts -->
+    <script src="~/Scripts/jquery.js"></script>
+
+    <script src="/Content/admin/js/bootstrap.min.js"></script>
+    <!-- page specific plugin scripts -->
+    <!--[if lt IE 9]>
+        <script type="text/javascript" src="/Content/admin/js/excanvas.min.js"></script>
+        <![endif]-->
+    <script type="text/javascript" src="/Content/admin/js/jquery-ui-1.10.2.custom.min.js"></script>
+    <script type="text/javascript" src="/Content/admin/js/jquery.ui.touch-punch.min.js"></script>
+    <script type="text/javascript" src="/Content/admin/js/jquery.slimscroll.min.js"></script>
+    <script type="text/javascript" src="/Content/admin/js/jquery.flot.min.js"></script>
+    <script type="text/javascript" src="/Content/admin/js/jquery.flot.pie.min.js"></script>
+    <script type="text/javascript" src="/Content/admin/js/jquery.flot.resize.min.js"></script>
+    <!-- ace scripts -->
+    <script src="/Content/admin/js/ace-elements.min.js"></script>
+    <script src="/Content/admin/js/ace.min.js"></script>
+    <!-- inline scripts related to this page -->
+
+    <link href="~/Scripts/Easydialog/easydialog.css" rel="stylesheet" />
+    <script src="~/Scripts/Easydialog/easydialog.min.js"></script>
+</head>
+<body class="navbar-fixed">
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="navbar-inner">
+            <div class="container-fluid">
+                <a class="brand" href="#"><small><i class="icon-leaf"></i>管理后台</small> </a>
+                <ul class="nav ace-nav pull-right">
+                    <li class="grey">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <i class="icon-tasks"></i>
+                            <span class="badge">4</span>
+                        </a>
+                        <ul class="pull-right dropdown-navbar dropdown-menu dropdown-caret dropdown-closer">
+                            <li class="nav-header">
+                                <i class="icon-ok"></i>4 Tasks to complete
+                            </li>
+
+                            <li>
+                                <a href="#">
+                                    <div class="clearfix">
+                                        <span class="pull-left">Software Update</span>
+                                        <span class="pull-right">65%</span>
+                                    </div>
+                                    <div class="progress progress-mini">
+                                        <div class="bar" style="width: 65%"></div>
+                                    </div>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="#">
+                                    <div class="clearfix">
+                                        <span class="pull-left">Hardware Upgrade</span>
+                                        <span class="pull-right">35%</span>
+                                    </div>
+                                    <div class="progress progress-mini progress-danger">
+                                        <div class="bar" style="width: 35%"></div>
+                                    </div>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="#">
+                                    <div class="clearfix">
+                                        <span class="pull-left">Unit Testing</span>
+                                        <span class="pull-right">15%</span>
+                                    </div>
+                                    <div class="progress progress-mini progress-warning">
+                                        <div class="bar" style="width: 15%"></div>
+                                    </div>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="#">
+                                    <div class="clearfix">
+                                        <span class="pull-left">Bug Fixes</span>
+                                        <span class="pull-right">90%</span>
+                                    </div>
+                                    <div class="progress progress-mini progress-success progress-striped active">
+                                        <div class="bar" style="width: 90%"></div>
+                                    </div>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="#">
+                                    See tasks with details
+                                    <i class="icon-arrow-right"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="purple">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <i class="icon-bell-alt icon-animated-bell icon-only"></i>
+                            <span class="badge badge-important">8</span>
+                        </a>
+                        <ul class="pull-right dropdown-navbar navbar-pink dropdown-menu dropdown-caret dropdown-closer">
+                            <li class="nav-header">
+                                <i class="icon-warning-sign"></i>8 Notifications
+                            </li>
+
+                            <li>
+                                <a href="#">
+                                    <div class="clearfix">
+                                        <span class="pull-left"><i class="icon-comment btn btn-mini btn-pink"></i>New comments</span>
+                                        <span class="pull-right badge badge-info">+12</span>
+                                    </div>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="#">
+                                    <i class="icon-user btn btn-mini btn-primary"></i>Bob just signed up as an editor ...
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="#">
+                                    <div class="clearfix">
+                                        <span class="pull-left"><i class="icon-shopping-cart btn btn-mini btn-success"></i>New orders</span>
+                                        <span class="pull-right badge badge-success">+8</span>
+                                    </div>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="#">
+                                    <div class="clearfix">
+                                        <span class="pull-left"><i class="icon-twitter btn btn-mini btn-info"></i>Followers</span>
+                                        <span class="pull-right badge badge-info">+4</span>
+                                    </div>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="#">
+                                    See all notifications
+                                    <i class="icon-arrow-right"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="green">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <i class="icon-envelope-alt icon-animated-vertical icon-only"></i>
+                            <span class="badge badge-success"></span>
+                        </a>
+                        <ul class="pull-right dropdown-navbar dropdown-menu dropdown-caret dropdown-closer">
+                            <li class="nav-header">
+                                <i class="icon-envelope"></i>消息管理
+                            </li>
+                            <li>
+                                <a href="/System/NotificationSend">
+                                    <div class="clearfix">
+                                        <span class="pull-left"><i class="icon-comment btn btn-mini btn-pink"></i>发送消息</span>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/System/Notification">
+                                    所有消息
+                                    <i class="icon-arrow-right"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="light-blue user-profile">
+                        <a class="user-menu dropdown-toggle" href="#" data-toggle="dropdown">
+                            <img alt="Jason's Photo" src="/Content/admin/avatars/user.jpg" class="nav-user-photo" />
+                            <span id="user_info">
+                                <small>欢迎您,</small> @User.Identity.Name
+                            </span>
+                            <i class="icon-caret-down"></i>
+                        </a>
+                        <ul id="user_menu" class="pull-right dropdown-menu dropdown-yellow dropdown-caret dropdown-closer">
+                            <li><a href="/System/Manage"><i class="icon-user"></i>个人资料</a></li>
+                            <li class="divider"></li>
+                            <li>
+                                @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", style = "display:block;width:100%;" }))
+                                {
+                                @Html.AntiForgeryToken()
+                                <a style="display: block; height: 100%;" href="javascript:document.getElementById('logoutForm').submit()"><i class="icon-off"></i>注销</a>
+                                }
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid" id="main-container">
+        <a href="#" id="menu-toggler"><span></span></a>
+        <!-- menu toggler -->
+        <div id="sidebar" class="fixed">
+            <div id="sidebar-shortcuts">
+                <div id="sidebar-shortcuts-large">
+                    <button class="btn btn-small btn-success"><i class="icon-signal"></i></button>
+                    <button class="btn btn-small btn-info"><i class="icon-pencil"></i></button>
+                    <button class="btn btn-small btn-warning"><i class="icon-group"></i></button>
+                    <button class="btn btn-small btn-danger"><i class="icon-cogs"></i></button>
+                </div>
+                <div id="sidebar-shortcuts-mini">
+
+                    <span class="btn btn-success"></span>
+
+                    <span class="btn btn-info"></span>
+
+                    <span class="btn btn-warning"></span>
+
+                    <span class="btn btn-danger"></span>
+
+                </div>
+            </div>
+            <!-- #sidebar-shortcuts -->
+            <ul class="nav nav-list">
+                <li id="index">
+                    <a href="/System">
+                        <i class="icon-dashboard"></i>
+                        <span>主界面</span>
+                    </a>
+                </li>
+                <li id="usermanager">
+                    <a href="/System/UserManager" class="dropdown-toggle">
+                        <i class="icon-group"></i>
+                        <span>用户管理</span>
+                        <b class="arrow icon-angle-down"></b>
+                    </a>
+                    <ul class="submenu">
+                        <li><a href="/System/UserManager"><i class="icon-double-angle-right"></i>用户列表</a></li>
+                        <li><a href="/System/UserManager/Level"><i class="icon-double-angle-right"></i>用户等级</a></li>
+                        <li><a href="/System/UserManager/Invite"><i class="icon-double-angle-right"></i>邀请注册</a></li>
+                    </ul>
+                </li>
+                <li id="urllist">
+                    <a href="/System/UrlList">
+                        <i class="icon-list"></i>
+                        <span>短址管理</span>
+                    </a>
+                </li>
+                <li id="withdrawlist">
+                    <a href="/System/WithdrawalsList">
+                        <i class="icon-key"></i>
+                        <span>提现管理</span>
+                    </a>
+                </li>
+                <li id="advmanager">
+                    <a href="/System/AdvManager" class="dropdown-toggle">
+                        <i class="icon-list-alt"></i>
+                        <span>广告管理</span>
+                        <b class="arrow icon-angle-down"></b>
+                    </a>
+                    <ul class="submenu">
+                        <li><a href="/System/AdvManager"><i class="icon-double-angle-right"></i>广告管理</a></li>
+                        <li><a href="/System/AdvManager/Position"><i class="icon-double-angle-right"></i>广告位管理</a></li>
+                    </ul>
+                </li>
+                <li id="setting">
+                    <a href="/System/Setting">
+                        <i class="icon-cogs"></i>
+                        <span>设置</span>
+                    </a>
+                </li>
+            </ul>
+            <!--/.nav-list-->
+            <div id="sidebar-collapse"><i class="icon-double-angle-left"></i></div>
+        </div>
+        <!--/#sidebar-->
+        <div id="main-content" class="clearfix" style="position: relative;">
+            <!--#breadcrumbs-->
+            <div id="page-content" class="clearfix" style="position: relative;">
+                <div class="page-header" style="position: fixed; width: 100%; z-index: 999; border-bottom: 1px solid #e5e5e5; background-color: #f5f5f5; margin-top: -8px; padding-top: 8px;">
+                    <h1>@Model.PageTitle <small><i class="icon-double-angle-right"></i>@Model.SubTitle</small></h1>
+                </div>
+                <div class="clearfix" style="height: 60px;"></div>
+                <!--/page-header-->
+                <div class="row-fluid">@RenderBody()</div>
+            </div>
+            <!--/#page-content-->
+        </div>
+        <!-- #main-content -->
+    </div>
+    <a href="#" id="btn-scroll-up" class="btn btn-small btn-inverse">
+        <i class="icon-double-angle-up icon-only"></i>
+    </a>
+    <script>
+        $("#@open").addClass("@openCss");
+        $("#@active").addClass("active");
+    </script>
+</body>
+</html>

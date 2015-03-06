@@ -1,0 +1,73 @@
+﻿@using YueQian.ShortUrl.Extensions
+@model YueQian.ShortUrl.Web.Models.SettingModel
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<div class="row-fluid">
+    <!-- PAGE CONTENT BEGINS HERE -->
+    <form class="form-horizontal" id="data-form">
+        <input type="hidden" name="Id" value="@Model.TModel.Id" />
+        <div class="control-group">
+            <label class="control-label" for="form-field-select-1">积分模式</label>
+            <div class="controls">
+                @Html.CalculatorSystemSelect("CalculatorSystemShow", Model.TModel.CalculatorSystem, new { onchange = "showDescription()" })
+                <a title="编辑积分模式" href="/System/Setting/c" class="btn btn-small btn-info"><i class="icon-pencil"></i></a>
+                <input type="hidden" id="CalculatorSystem" name="CalculatorSystem" value="1" />
+                <span id="calculatordescription" class="help-inline"></span>
+            </div>
+        </div>
+        <div class="hr hr-dotted"></div>
+        <div class="control-group">
+            <label class="control-label" for="form-field-select-1">财务帐号</label>
+            <div class="controls">
+                <span class="span12">
+                    @if (Model.TModel.CompanyAccounts != null && Model.TModel.CompanyAccounts.Count() > 0)
+                    {
+                        foreach (var item in Model.TModel.CompanyAccounts)
+                        {
+                            <label><span class="lbl">@item</span></label>
+                        }
+                    }
+                </span>
+                <a title="编辑财务帐号" href="/System/Setting/account" class="btn btn-small btn-info"><i class="icon-pencil"></i></a>
+            </div>
+        </div>
+        <div class="hr hr-dotted"></div>
+        <div class="form-actions">
+            <button class="btn btn-info" type="submit"><i class="icon-ok"></i> 提交</button>
+            &nbsp; &nbsp; &nbsp;
+            <button class="btn" type="reset"><i class="icon-undo"></i> 重置</button>
+        </div>
+    </form>
+</div>
+<script>
+    function showDescription() {
+        var v = document.getElementById("CalculatorSystemShow").value;
+        if (v.length > 0) {
+            document.getElementById("CalculatorSystem").value = v.split('&')[0];
+            document.getElementById("calculatordescription").innerText = v.split('&')[1];
+        }
+    }
+    $(function () {
+        showDescription();
+
+        $("#data-form").validate({
+            errorElement: "span",
+            errorClass: "invalid",
+            rules: {
+                CalculatorSystem: { required: true }
+            },
+            messages: {
+                Name: { required: "请选择积分模式" }
+            },
+            submitHandler: function (form) {
+                $.post("/System/Setting", $("#data-form").serialize(),
+                    function (data) {
+                        alert(data.msg);
+                        window.location.href = "/System/Setting";
+                    }, "Json");
+            }
+        });
+    })
+</script>

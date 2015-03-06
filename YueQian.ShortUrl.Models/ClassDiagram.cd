@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="YueQian.ShortUrl.Models.LongIdEntity">
+    <Position X="3.5" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAA=</HashCode>
+      <FileName>LongIdEntity.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="YueQian.ShortUrl.Models.UserInfo">
+    <Position X="0.75" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAACAAAAAAAAAAAAEAAAAAAAAAAAA=</HashCode>
+      <FileName>UserInfo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="YueQian.ShortUrl.Models.WebUrl">
+    <Position X="0.5" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABgAAAAAAAAgAAAAAAACACQAAEAAAAAA=</HashCode>
+      <FileName>WebUrl.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="YueQian.ShortUrl.Models.ArticleBase">
+    <Position X="0.5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAEAAAAAAAAAAAAAAAAAAAAAAAAAAgAA=</HashCode>
+      <FileName>ArticleBase.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="YueQian.ShortUrl.Models.Category">
+    <Position X="2.75" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAAAAAAAAAQAAAAAAAAAAwAAAAAAAAA=</HashCode>
+      <FileName>Category.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="YueQian.ShortUrl.Models.Advertisement">
+    <Position X="9.5" Y="3.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABAAAAAAAAAAAAAAAAAIAAgUAAAAAAAAIBAAAA=</HashCode>
+      <FileName>Advertisement.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="YueQian.ShortUrl.Models.AdvertisePosition">
+    <Position X="7.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAQAgAAAAAAAAAAQAAAAAQAAAAAAAAAAAAAA=</HashCode>
+      <FileName>AdvertisePosition.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="YueQian.ShortUrl.Models.AdvertiseStatistics">
+    <Position X="11.75" Y="3.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAIAAAEAAAAAAAAAAAAAA=</HashCode>
+      <FileName>AdvertiseStatistics.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="YueQian.ShortUrl.Models.ViewCount">
+    <Position X="8.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAAAAAAQAEAAAAAAAAgAAAAAAAAACAAAAABAIAA=</HashCode>
+      <FileName>ViewCount.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="YueQian.ShortUrl.Models.Integral">
+    <Position X="5.25" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAxAAAAAAACAAAAAAABAAAA=</HashCode>
+      <FileName>Integral.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="YueQian.ShortUrl.Models.CalculatorSystem">
+    <Position X="5.25" Y="6.5" Width="1.5" />
+    <InheritanceLine Type="YueQian.ShortUrl.Models.LongIdEntity" ManuallyRouted="true" FixedToPoint="true">
+      <Path>
+        <Point X="4.25" Y="2.23" />
+        <Point X="4.25" Y="3.625" />
+        <Point X="4.5" Y="3.625" />
+        <Point X="4.5" Y="7.293" />
+        <Point X="5.25" Y="7.293" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAQAAAAAhAAAA=</HashCode>
+      <FileName>CalculatorSystem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="YueQian.ShortUrl.Models.Setting">
+    <Position X="3.25" Y="7.5" Width="1.5" />
+    <InheritanceLine Type="YueQian.ShortUrl.Models.LongIdEntity" ManuallyRouted="true" FixedToPoint="true">
+      <Path>
+        <Point X="4.25" Y="2.23" />
+        <Point X="4.25" Y="2.605" />
+        <Point X="4.5" Y="2.605" />
+        <Point X="4.5" Y="7.5" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAABAgAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Setting.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="微软雅黑" Size="9" />
+</ClassDiagram>

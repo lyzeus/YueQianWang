@@ -1,0 +1,174 @@
+﻿@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="row-fluid">
+    <p>
+        <button class="btn btn-primary" onclick="op.add()"><i class="icon-glass"></i>新增用户等级</button>
+        <a class="btn btn-primary" href="/System/UserManager"><i class="icon-undo"></i>返回用户列表</a>
+    </p>
+    <div class="row-fluid" id="add" style="display: none;">
+        <div class="widget-box">
+            <div class="widget-header">
+                <h4>用户等级</h4>
+            </div>
+            <div class="widget-body">
+                <form class="form-horizontal" id="data-form">
+                    <div class="control-group">
+                        <input type="hidden" name="Id" id="Id" value="0" />
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="Name">名称</label>
+                        <div class="controls">
+                            <input type="text" id="Name" name="Name" placeholder="名称">
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="MinIntegral">最小积分</label>
+                        <div class="controls">
+                            <input type="text" id="MinIntegral" name="MinIntegral" placeholder="最小积分">
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="MaxIntegral">最大积分</label>
+                        <div class="controls">
+                            <input type="text" id="MaxIntegral" name="MaxIntegral" placeholder="最大积分">
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="Coefficient">系数</label>
+                        <div class="controls">
+                            <input type="text" id="Coefficient" name="Coefficient" placeholder="系数">
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="Contents">说明</label>
+                        <div class="controls">
+                            <textarea class="span8 limited" id="Contents" name="Contents" data-maxlength="120" maxlength="120"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button class="btn btn-info" type="submit"><i class="icon-ok"></i>提交</button>
+                        &nbsp; &nbsp; &nbsp;
+                        <button class="btn" type="reset" onclick="op.addcancel()"><i class="icon-undo"></i>取消</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="hr"></div>
+    </div>
+    <div class="table-header">
+    </div>
+    <table id="dataTable" class="table table-hover table-nomargin table-striped table-bordered">
+        <thead>
+            <tr>
+                <th style="width: 200px;">等级名称</th>
+                <th style="width: 135px;">积分</th>
+                <th style="width: 135px;">系数</th>
+                <th>说明</th>
+                <th style="width: 140px;">更新时间</th>
+                <th style="width: 90px;">操作</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script type="text/javascript" src="/Content/admin/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="/Content/admin/js/jquery.dataTables.bootstrap.js"></script>
+<script type="text/javascript">
+
+    jQuery.validator.addMethod("GTE", function (value, element, param) {
+        return this.optional(element) || ~~value >= ~~$(param).val();
+    }, "最大积分不得小于最小积分");
+    var op = {
+        add: function () {
+            $("#Id").val("0");
+            $("#Name").val("");
+            $("#MinIntegral").val("");
+            $("#MaxIntegral").val("");
+            $("#Coefficient").val("");
+            $("#Contents").text("");
+            $("#add").slideDown();
+        },
+        edit: function (id) {
+            $.post("/System/MemberShipLevel", { eId: id }, function (data) {
+                if (data.result) {
+                    $("#Id").val(data.model.Id);
+                    $("#Name").val(data.model.Name);
+                    $("#MinIntegral").val(data.model.MinIntegral);
+                    $("#MaxIntegral").val(data.model.MaxIntegral);
+                    $("#Coefficient").val(data.model.Coefficient);
+                    $("#Contents").text(data.model.Contents);
+                    $("#add").slideDown();
+                }
+                else {
+                    alert(data.model);
+                    return false;
+                }
+            }, "Json");
+        },
+        addcancel: function () {
+            $("#Id").val("0");
+            $("#Name").val("");
+            $("#MinIntegral").val("");
+            $("#MaxIntegral").val("");
+            $("#Coefficient").val("");
+            $("#Contents").text("");
+            $("#add").slideUp();
+        },
+        init: function () {
+            $("#data-form").validate({
+                errorElement: "span",
+                errorClass: "invalid",
+                rules: {
+                    Name: { required: true },
+                    MinIntegral: { required: true, digits: true },
+                    MaxIntegral: { required: true, digits: true, GTE: "#MinIntegral" },
+                    Coefficient: { required: true, digits: true }
+                },
+                messages: {
+                    Name: { required: "模式名称" },
+                    MinIntegral: { required: "最小积分", digits: "请填写一个整数" },
+                    MaxIntegral: { required: "最大积分", digits: "请填写一个整数" },
+                    Coefficient: { required: "系数", digits: "请填写一个整数" },
+                },
+                submitHandler: function (form) {
+                    $.post("/System/MemberShipLevel", $("#data-form").serialize(),
+                        function (data) {
+                            alert(data.msg);
+                            if (data.result)
+                                window.location.href = "/System/UserManager/Level";
+                            return false;
+                        }, "Json");
+                }
+            });
+
+            this.search();
+        },
+        search: function () {
+            $("#dataTable").dataTable().fnDestroy();
+            $('#dataTable').dataTable({
+                "bProcessing": true,
+                "bSort": false,
+                "bServerSide": true,
+                "bPaginate": false,
+                "aoColumns": [
+                    { "mDataProp": "Name" },
+                    { "mDataProp": "Integral" },
+                    { "mDataProp": "Coefficient" },
+                    { "mDataProp": "Contents" },
+                    { "mDataProp": "CreationDate" },
+                    { "mDataProp": "Operate" }
+                ],
+                "sAjaxSource": "/System/MemberShipLevelList",
+                "sServerMethod": "POST",
+                "fnServerParams": function (aoData) { },
+                "bFilter": false,
+                "sDom": 'frtip'
+            });
+        }
+    }
+
+    $(function () { op.init(); })
+</script>

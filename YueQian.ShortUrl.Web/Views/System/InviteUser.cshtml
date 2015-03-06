@@ -1,0 +1,105 @@
+﻿@model YueQian.ShortUrl.Admin.ViewModels.AdminInviteModel
+@{Layout = "~/Views/Shared/_AdminLayout.cshtml";}
+<div class="row-fluid">
+    <form class="form-horizontal" id="data-list">
+        @if (Model.InUseInviteCodes != null && Model.InUseInviteCodes.Count() > 0)
+        {
+            foreach (var item in Model.InUseInviteCodes)
+            {
+                <div class="control-group">
+                    <label class="control-label">地址</label>
+                    <div class="controls">
+                        <input id="InviteUrl@(item.Code)" class="span6" type="text" value="http://yqurl.com/User/Register?invite=@(item.Code)" readonly="readonly" />
+                        <a data-clipboard-target="InviteUrl@(item.Code)" class="copy">复制</a>
+
+                        <input id="InviteCode@(item.Code)" style="width:60px;" type="text" value="@(item.Code)" readonly="readonly" />
+                        <a data-clipboard-target="InviteCode@(item.Code)" class="copy">复制</a>
+                    </div>
+                </div>
+            }
+        }
+    </form>
+</div>
+<div>
+    <form class="form-horizontal">
+        <div class="control-group">
+            <label class="control-label"></label>
+            <div class="controls">
+                <button type="button" id="generate" class="btn btn-success "><i class="icon-exchange"></i>生成邀请码</button>
+            </div>
+        </div>
+    </form>
+</div>
+<script src="/Scripts/ZeroClipboard/ZeroClipboard.min.js"></script>
+<script>
+    $(function () {
+        ZeroClipboard.config({
+            moviePath: '/Scripts/ZeroClipboard/ZeroClipboard.swf',
+            swfPath: "/Scripts/ZeroClipboard/ZeroClipboard.swf"
+        });
+
+        initCopy(".copy");
+        
+        $("#generate").click(function () {
+            $.post("/Validate/Invite?cach=" + Math.random(), function (data) {
+                var html = '<div class="control-group">'
+                         + '    <label class="control-label">地址</label>'
+                         + '    <div class="controls">'
+                         + '        <input id="InviteUrl' + data.code + '" class="span6" type="text" value="http:\/\/yqurl.com\/User\/Register?invite=' + data.code + '" readonly="readonly" />'
+                         + '        <a data-clipboard-target="InviteUrl' + data.code + '" class="copy' + data.code + '">复制</a>'
+                         +'         <input id="InviteCode' + data.code + '" style="width:60px;" type="text" value="' + data.code + '" readonly="readonly" />'
+                         + '        <a data-clipboard-target="InviteCode' + data.code + '" class="copy' + data.code + '">复制</a>'
+                         + '    </div></div>'
+
+                $("#data-list").append(html);
+
+                initCopy(".copy" + data.code);
+
+            }, "JSON");
+        });
+
+        function initCopy(selector) {
+            $(selector).each(function () {
+                var _this = $(this);
+                var client = new ZeroClipboard(_this);
+                client.on("load", function (readyEvent) {
+                    client.on("complete", function (client, args) {
+                        _this.css("color", "#0f0");
+                        _this.text("复制成功");
+                    });
+                });
+            });
+        }
+    });
+</script>
+<div class="row-fluid">
+    <h3 class="header smaller lighter blue">已使用邀请码</h3>
+
+    <div class="span12">
+        <table id="table_bug_report" class="table table-striped table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>邀请码</th>
+                    <th>注册人</th>
+                    <th>生成时间</th>
+                    <th>注册时间</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.UsedInviteCodes != null && Model.UsedInviteCodes.Count() > 0)
+                {
+                    foreach (var item in Model.UsedInviteCodes)
+                    {
+                        <tr>
+                            <td>@item.Code</td>
+                            <td>@item.InvitedUserName</td>
+                            <td>@item.CreationDate</td>
+                            <td>@item.UsedDate</td>
+                        </tr>
+                    }
+                }
+
+            </tbody>
+        </table>
+    </div><!--/span-->
+</div>

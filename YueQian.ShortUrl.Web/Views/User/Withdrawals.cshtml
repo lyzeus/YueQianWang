@@ -1,0 +1,24 @@
+﻿@using YueQian.ShortUrl.Extensions
+@model YueQian.ShortUrl.Models.Withdrawals
+@{
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Content/user/scripts/withdrawals.create.js"></script>
+<form id="withdrawalsform" action="#" method="post">
+    @Html.HiddenFor(model => model.Id)
+    <p>
+        <label>*提现金额(可用积分:@(new YueQian.ShortUrl.Core.IntegralCalculator(Model.UserId).Integral))</label>
+        @Html.TextBoxFor(model => model.Amount, new { @class = "text-input medium-input", maxLength = "5" })
+    </p>
+    <p>
+        <label>备注</label>
+        @Html.TextAreaFor(model => model.Contents, new { @class = "text-input medium-input", style = "height:100px;" })
+    </p>
+    <p>
+        <input class="button" type="submit" value="提交" />
+        <input class="button" type="reset" value="重置" />
+    </p>
+    <div class="clear">
+    </div>
+</form>

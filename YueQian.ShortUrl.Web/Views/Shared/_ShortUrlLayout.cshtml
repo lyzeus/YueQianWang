@@ -1,0 +1,40 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title - 跃迁网 | 轻松网赚 短址跃迁</title>
+
+    <link href="/Content/Site.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div class="toprow">
+        <div class="toplogo">
+            <p class="site-title">
+                <a href="/Home">
+                    <img src="~/Content/user/images/logo_design2_270_83.png" /></a>
+            </p>
+        </div>
+        <div class="topinfo">
+            <p>@RenderBody()</p>
+        </div>
+        @*<div class="clear"></div>*@
+    </div>
+    <div class="container">
+        <div class="ad">
+            <div class="Lside-ad">
+                <p>左侧广告位</p>
+            </div>
+            <div class="Mid-ad">
+                <p>中间广告位</p>
+            </div>
+            <div class="Rside-ad">
+                <p>右侧广告位</p>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+</body>
+</html>
