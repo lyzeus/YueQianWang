@@ -363,6 +363,7 @@
     <Content Include="Content\admin\font\FontAwesome.otf" />
     <None Include="Properties\PublishProfiles\yq.pubxml" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
+    <Content Include="Images\bgbanner.png" />
     <Content Include="Images\main-bg6.jpg" />
     <Content Include="Images\main-bg5.jpg" />
     <Content Include="Images\main-bg4.jpg" />
@@ -487,6 +488,9 @@
     <Content Include="Views\System\NotificationSend.cshtml" />
     <Content Include="Views\System\UserIntegral.cshtml" />
     <Content Include="Views\User\Confirmation.cshtml" />
+    <Content Include="Views\Home\FAQ.cshtml" />
+    <Content Include="Views\Home\Privacy.cshtml" />
+    <Content Include="Views\Home\Terms.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
