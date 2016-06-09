@@ -337,6 +337,8 @@ namespace YueQian.ShortUrl.Web.Controllers
                     return View("CalculatorSetting", new IndexModel() { PageTitle = "积分系统", SubTitle = "设置" });
                 case "account"://财务帐号
                     return View("CompanyAccountSetting", new IndexModel() { PageTitle = "财务帐号", SubTitle = "设置" });
+                case "withdrawday":
+                    return View();
             }
 
         }
