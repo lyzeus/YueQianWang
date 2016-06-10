@@ -1,34 +1,38 @@
 ﻿@{
-    ViewBag.Title = "About";
+    ViewBag.Title = "关于我们";
 }
 
-<hgroup class="title">
-    <h1>@ViewBag.Title.</h1>
-    <h2>@ViewBag.Message</h2>
-</hgroup>
 
-<article>
-    <p>
-        Use this area to provide additional information.
-    </p>
+    <style>
+        .main {width: 900px;padding: 25px;text-align: center;}
+        .at {font-family: Microsoft YaHei,微软雅黑,SimSun,宋体,Arial;font-size: 26px;font-weight: bold;}
+        .ac {font-family: Microsoft YaHei,微软雅黑,SimSun,宋体,Arial;font-size: 14px;text-align: left;}
+    </style>
 
-    <p>
-        Use this area to provide additional information.
-    </p>
+<div class="main">
+ 
+    <div class="at">关于我们</div>
 
-    <p>
-        Use this area to provide additional information.
-    </p>
-</article>
 
-<aside>
-    <h3>Aside Title</h3>
-    <p>
-        Use this area to provide additional information.
-    </p>
-    <ul>
-        <li>@Html.ActionLink("Home", "Index", "Home")</li>
-        <li>@Html.ActionLink("About", "About", "Home")</li>
-        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-    </ul>
-</aside>
+
+    <div class="ac">
+        <p>
+            &nbsp;
+        </p>
+        <p>
+            跃迁网是一个短（转）址网站。本站免费提供网址缩短服务。统计并根据短址的访问量为用户提供收益。
+        </p>
+    </div>
+
+    @*<aside>
+        <h3>Aside Title</h3>
+        <p>
+            Use this area to provide additional information.
+        </p>
+        <ul>
+            <li>@Html.ActionLink("Home", "Index", "Home")</li>
+            <li>@Html.ActionLink("About", "About", "Home")</li>
+            <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+        </ul>
+    </aside>*@
+</div>
